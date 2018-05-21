@@ -1,13 +1,14 @@
 package ru.wkn.distributions;
 
-import java.io.PrintWriter;
+import java.io.BufferedWriter;
+import java.io.IOException;
 
 public class PoissonDistribution {
 
-    private PrintWriter printWriter;
+    private BufferedWriter bufferedWriter;
 
-    public PoissonDistribution(PrintWriter printWriter) {
-        this.printWriter = printWriter;
+    public PoissonDistribution(BufferedWriter bufferedWriter) {
+        this.bufferedWriter = bufferedWriter;
     }
 
     private double getRandomValue(double alpha) {
@@ -18,7 +19,7 @@ public class PoissonDistribution {
         return random;
     }
 
-    public void distribute() {
+    public void distribute() throws IOException {
         double alpha = 0;
         for (int i = 0; i < 100; i++) {
             double lambda = 0.95;
@@ -31,7 +32,7 @@ public class PoissonDistribution {
                 exp *= lambda / k;
                 s += exp;
             }
-            printWriter.print(k + "\n");
+            bufferedWriter.write(k + "\n");
         }
     }
 }
