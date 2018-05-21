@@ -32,7 +32,8 @@ public class PoissonDistribution {
                 exp *= lambda / k;
                 s += exp;
             }
-            bufferedWriter.write(k + "\n");
+            bufferedWriter.write(String.valueOf(k) + "\n");
+            bufferedWriter.flush();
         }
     }
 }
