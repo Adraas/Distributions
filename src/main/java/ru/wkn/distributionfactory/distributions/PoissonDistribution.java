@@ -1,42 +1,39 @@
-package ru.wkn.distributions;
+package ru.wkn.distributionfactory.distributions;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Properties;
 
-public class PoissonDistribution {
+public class PoissonDistribution extends Distribution {
 
     private Properties properties;
     private Writer writer;
 
     public PoissonDistribution(Properties properties, Writer writer) {
+        super(properties, writer);
         this.properties = properties;
         this.writer = writer;
     }
 
-    private double getRandomValue(double alpha) {
-        double random;
-        do {
-            random = Math.random();
-        } while (random == alpha);
-        return random;
-    }
-
+    @Override
     public void distribute() throws IOException {
+        StringBuilder data = new StringBuilder();
         double alpha = 0;
-        for (int i = 0; i < 100; i++) {
+        int size = Integer.parseInt(properties.getProperty("size"));
+        for (int i = 0; i < size; i++) {
             double lambda = Double.parseDouble(properties.getProperty("lambda"));
             double exp = Math.exp(-lambda);
             double s = exp;
             int k = 0;
-            alpha = getRandomValue(alpha);
+            alpha = super.getRandomValue(alpha);
             while (s < alpha) {
                 k++;
                 exp *= lambda / k;
                 s += exp;
             }
-            writer.write(String.valueOf(k) + System.lineSeparator());
-            writer.flush();
+            data.append(String.valueOf(k)).append("\r\n");
         }
+        writer.write(data.toString());
+        writer.flush();
     }
 }
