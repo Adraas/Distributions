@@ -22,8 +22,8 @@ public class UniformDistribution extends Distribution {
         StringBuilder data = new StringBuilder();
         double n = 0;
         int size = Integer.parseInt(properties.getProperty("size"));
-        double a = Integer.parseInt(properties.getProperty("a"));
-        double b = Integer.parseInt(properties.getProperty("b"));
+        double a = Double.parseDouble(properties.getProperty("a"));
+        double b = Double.parseDouble(properties.getProperty("b"));
         for (int i=0; i < size; i++) {
             n = super.getRandomValue(n);
             n = n * a + b;
