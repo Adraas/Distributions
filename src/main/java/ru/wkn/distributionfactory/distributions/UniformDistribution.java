@@ -22,9 +22,11 @@ public class UniformDistribution extends Distribution {
         StringBuilder data = new StringBuilder();
         double n = 0;
         int size = Integer.parseInt(properties.getProperty("size"));
+        double a = Integer.parseInt(properties.getProperty("a"));
+        double b = Integer.parseInt(properties.getProperty("b"));
         for (int i=0; i < size; i++) {
             n = super.getRandomValue(n);
-            n = n * 0.0052127 + 2.241772;
+            n = n * a + b;
             n = new BigDecimal(n).setScale(5, RoundingMode.UP).doubleValue();
             data.append(n).append("\r\n");
         }

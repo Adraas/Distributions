@@ -18,9 +18,9 @@ public class DistributionFactory implements DistributionFactoryIF<IDistribution>
     }
 
     @Override
-    public IDistribution createDistribution(String prefixName) {
-        return prefixName.equals("poisson") ? new PoissonDistribution(properties, writer)
-                : prefixName.equals("uniform") ? new UniformDistribution(properties, writer)
+    public IDistribution createDistributionByFilename(String filename) {
+        return filename.equals("poisson.txt") ? new PoissonDistribution(properties, writer)
+                : filename.equals("uniform.txt") ? new UniformDistribution(properties, writer)
                 : null;
     }
 }
