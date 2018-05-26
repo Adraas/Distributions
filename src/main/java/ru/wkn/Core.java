@@ -12,13 +12,7 @@ import java.util.Properties;
 
 public class Core {
 
-    private String propertyFilename;
-
-    public Core(String propertyFilename) {
-        this.propertyFilename = propertyFilename;
-    }
-
-    public void writeDistributionInFile(String filename) {
+    public void writeDistributionInFile(String filename, String propertyFilename) {
         DistributionFactory distributionFactoryIF;
         try (PrintWriter printWriter = new PrintWriter(
                 new OutputStreamWriter(
