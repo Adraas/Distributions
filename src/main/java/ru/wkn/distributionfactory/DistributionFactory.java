@@ -1,5 +1,6 @@
 package ru.wkn.distributionfactory;
 
+import ru.wkn.distributionfactory.distributions.BinaryDistribution;
 import ru.wkn.distributionfactory.distributions.IDistribution;
 import ru.wkn.distributionfactory.distributions.PoissonDistribution;
 import ru.wkn.distributionfactory.distributions.UniformDistribution;
@@ -21,6 +22,7 @@ public class DistributionFactory implements DistributionFactoryIF<IDistribution>
     public IDistribution createDistributionByFilename(String filename) {
         return filename.equals("poisson.txt") ? new PoissonDistribution(properties, writer)
                 : filename.equals("uniform.txt") ? new UniformDistribution(properties, writer)
+                : filename.equals("binary.txt") ? new BinaryDistribution(properties, writer)
                 : null;
     }
 }

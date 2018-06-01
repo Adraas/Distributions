@@ -6,5 +6,6 @@ public class Launcher {
         Core core = new Core();
         core.writeDistributionInFile("poisson.txt", "/parameters/poisson.properties");
         core.writeDistributionInFile("uniform.txt", "/parameters/uniform.properties");
+        core.writeDistributionInFile("binary.txt", "/parameters/binary.properties");
     }
 }
