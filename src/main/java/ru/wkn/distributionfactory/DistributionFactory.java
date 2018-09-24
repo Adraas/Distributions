@@ -1,9 +1,9 @@
 package ru.wkn.distributionfactory;
 
-import ru.wkn.distributionfactory.distributions.BinaryDistribution;
-import ru.wkn.distributionfactory.distributions.IDistribution;
-import ru.wkn.distributionfactory.distributions.PoissonDistribution;
-import ru.wkn.distributionfactory.distributions.UniformDistribution;
+import ru.wkn.distributions.BinaryDistribution;
+import ru.wkn.distributions.IDistribution;
+import ru.wkn.distributions.PoissonDistribution;
+import ru.wkn.distributions.UniformDistribution;
 
 import java.io.Writer;
 import java.util.Properties;

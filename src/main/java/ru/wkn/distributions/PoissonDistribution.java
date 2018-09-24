@@ -1,4 +1,4 @@
-package ru.wkn.distributionfactory.distributions;
+package ru.wkn.distributions;
 
 import java.io.IOException;
 import java.io.Writer;

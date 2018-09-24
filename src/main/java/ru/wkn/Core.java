@@ -1,7 +1,7 @@
 package ru.wkn;
 
 import ru.wkn.distributionfactory.DistributionFactory;
-import ru.wkn.distributionfactory.distributions.IDistribution;
+import ru.wkn.distributions.IDistribution;
 
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
