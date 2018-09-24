@@ -13,7 +13,7 @@ public class BinaryDistribution extends Distribution {
 
     @Override
     public double[] getDistribution() {
-        double parameter = Double.parseDouble(properties.getProperty("parameter"));
+        double probability = Double.parseDouble(properties.getProperty("probability"));
         int selectionSize = Integer.parseInt(properties.getProperty("selectionSize"));
         int n = Integer.parseInt(properties.getProperty("n"));
         double[] distribution = new double[n];
@@ -21,7 +21,7 @@ public class BinaryDistribution extends Distribution {
             double currentValueOfDistribution = 0;
             int temp = 0;
             while (temp < n) {
-                currentValueOfDistribution += randomBinaryValue(parameter);
+                currentValueOfDistribution += randomBinaryValue(probability);
                 temp++;
             }
             distribution[index] = currentValueOfDistribution;
@@ -29,9 +29,9 @@ public class BinaryDistribution extends Distribution {
         return distribution;
     }
 
-    private double randomBinaryValue(double parameter) {
+    private double randomBinaryValue(double probability) {
         double delta, random;
-        delta = 1 - parameter;
+        delta = 1 - probability;
         random = new Random().nextDouble();
         if (random > delta) {
             return 1;
