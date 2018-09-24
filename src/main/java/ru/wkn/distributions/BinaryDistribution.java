@@ -15,12 +15,12 @@ public class BinaryDistribution extends Distribution {
     public double[] getDistribution() {
         double probability = Double.parseDouble(properties.getProperty("probability"));
         int selectionSize = Integer.parseInt(properties.getProperty("selectionSize"));
-        int n = Integer.parseInt(properties.getProperty("n"));
-        double[] distribution = new double[n];
+        int quantityOfExperiments = Integer.parseInt(properties.getProperty("quantityOfExperiments"));
+        double[] distribution = new double[quantityOfExperiments];
         for (int index = 0; index < selectionSize; index++) {
             double currentValueOfDistribution = 0;
             int temp = 0;
-            while (temp < n) {
+            while (temp < quantityOfExperiments) {
                 currentValueOfDistribution += randomBinaryValue(probability);
                 temp++;
             }
