@@ -12,23 +12,24 @@ public class BinaryDistribution extends Distribution {
     }
 
     @Override
-    public void distribute() {
-        StringBuilder data = new StringBuilder();
+    public double[] getDistribution() {
         double parameter = Double.parseDouble(properties.getProperty("parameter"));
-        int size = Integer.parseInt(properties.getProperty("size"));
+        int selectionSize = Integer.parseInt(properties.getProperty("selectionSize"));
         int n = Integer.parseInt(properties.getProperty("n"));
-        for (int i = 0; i < size; i++) {
-            double sum = 0;
-            int j = 0;
-            while (j < n) {
-                sum += binary(parameter);
-                j++;
+        double[] distribution = new double[n];
+        for (int index = 0; index < selectionSize; index++) {
+            double currentValueOfDistribution = 0;
+            int temp = 0;
+            while (temp < n) {
+                currentValueOfDistribution += randomBinaryValue(parameter);
+                temp++;
             }
-            data.append(sum).append("\r\n");
+            distribution[index] = currentValueOfDistribution;
         }
+        return distribution;
     }
 
-    private double binary(double parameter) {
+    private double randomBinaryValue(double parameter) {
         double delta, random;
         delta = 1 - parameter;
         random = new Random().nextDouble();

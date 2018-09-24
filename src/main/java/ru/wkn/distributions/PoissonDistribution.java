@@ -11,22 +11,23 @@ public class PoissonDistribution extends Distribution {
     }
 
     @Override
-    public void distribute() {
-        StringBuilder data = new StringBuilder();
+    public double[] getDistribution() {
         double alpha = 0;
-        int size = Integer.parseInt(properties.getProperty("size"));
-        for (int i = 0; i < size; i++) {
+        int selectionSize = Integer.parseInt(properties.getProperty("selectionSize"));
+        double[] distribution = new double[selectionSize];
+        for (int index = 0; index < selectionSize; index++) {
             double lambda = Double.parseDouble(properties.getProperty("lambda"));
             double exp = Math.exp(-lambda);
-            double s = exp;
-            int k = 0;
+            double temp = exp;
+            int currentValueOfDistribution = 0;
             alpha = super.getRandomValue(alpha);
-            while (s < alpha) {
-                k++;
-                exp *= lambda / k;
-                s += exp;
+            while (temp < alpha) {
+                currentValueOfDistribution++;
+                exp *= lambda / currentValueOfDistribution;
+                temp += exp;
             }
-            data.append(String.valueOf(k)).append("\r\n");
+            distribution[index] = currentValueOfDistribution;
         }
+        return distribution;
     }
 }

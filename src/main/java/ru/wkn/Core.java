@@ -15,7 +15,7 @@ public class Core {
             properties.load(Core.class.getResourceAsStream(propertyFilename));
             distributionFactoryIF = new DistributionFactory(properties);
             IDistribution iDistribution = distributionFactoryIF.createDistributionByFilename(filename);
-            iDistribution.distribute();
+            iDistribution.getDistribution();
         } catch (IOException e) {
             e.printStackTrace();
         }
