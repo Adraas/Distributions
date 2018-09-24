@@ -5,24 +5,21 @@ import ru.wkn.distributions.IDistribution;
 import ru.wkn.distributions.PoissonDistribution;
 import ru.wkn.distributions.UniformDistribution;
 
-import java.io.Writer;
 import java.util.Properties;
 
 public class DistributionFactory implements DistributionFactoryIF<IDistribution> {
 
     private Properties properties;
-    private Writer writer;
 
-    public DistributionFactory(Properties properties, Writer writer) {
+    public DistributionFactory(Properties properties) {
         this.properties = properties;
-        this.writer = writer;
     }
 
     @Override
     public IDistribution createDistributionByFilename(String filename) {
-        return filename.equals("poisson.txt") ? new PoissonDistribution(properties, writer)
-                : filename.equals("uniform.txt") ? new UniformDistribution(properties, writer)
-                : filename.equals("binary.txt") ? new BinaryDistribution(properties, writer)
+        return filename.equals("poisson.txt") ? new PoissonDistribution(properties)
+                : filename.equals("uniform.txt") ? new UniformDistribution(properties)
+                : filename.equals("binary.txt") ? new BinaryDistribution(properties)
                 : null;
     }
 }

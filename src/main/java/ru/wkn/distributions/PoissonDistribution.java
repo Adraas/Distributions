@@ -1,22 +1,18 @@
 package ru.wkn.distributions;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Properties;
 
 public class PoissonDistribution extends Distribution {
 
     private Properties properties;
-    private Writer writer;
 
-    public PoissonDistribution(Properties properties, Writer writer) {
-        super(properties, writer);
+    public PoissonDistribution(Properties properties) {
+        super(properties);
         this.properties = properties;
-        this.writer = writer;
     }
 
     @Override
-    public void distribute() throws IOException {
+    public void distribute() {
         StringBuilder data = new StringBuilder();
         double alpha = 0;
         int size = Integer.parseInt(properties.getProperty("size"));
@@ -33,7 +29,5 @@ public class PoissonDistribution extends Distribution {
             }
             data.append(String.valueOf(k)).append("\r\n");
         }
-        writer.write(data.toString());
-        writer.flush();
     }
 }

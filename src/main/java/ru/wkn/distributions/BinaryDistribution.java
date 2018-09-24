@@ -1,23 +1,19 @@
 package ru.wkn.distributions;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Properties;
 import java.util.Random;
 
 public class BinaryDistribution extends Distribution {
 
     private Properties properties;
-    private Writer writer;
 
-    public BinaryDistribution(Properties properties, Writer writer) {
-        super(properties, writer);
+    public BinaryDistribution(Properties properties) {
+        super(properties);
         this.properties = properties;
-        this.writer = writer;
     }
 
     @Override
-    public void distribute() throws IOException {
+    public void distribute() {
         StringBuilder data = new StringBuilder();
         double parameter = Double.parseDouble(properties.getProperty("parameter"));
         int size = Integer.parseInt(properties.getProperty("size"));
@@ -31,8 +27,6 @@ public class BinaryDistribution extends Distribution {
             }
             data.append(sum).append("\r\n");
         }
-        writer.write(data.toString());
-        writer.flush();
     }
 
     private double binary(double parameter) {
