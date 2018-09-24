@@ -11,7 +11,6 @@ public class UniformDistribution extends Distribution {
     private Writer writer;
 
     public UniformDistribution(Properties properties) {
-        super(properties);
         this.properties = properties;
     }
 

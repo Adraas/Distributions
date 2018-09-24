@@ -7,7 +7,6 @@ public class PoissonDistribution extends Distribution {
     private Properties properties;
 
     public PoissonDistribution(Properties properties) {
-        super(properties);
         this.properties = properties;
     }
 

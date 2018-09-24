@@ -8,7 +8,6 @@ public class BinaryDistribution extends Distribution {
     private Properties properties;
 
     public BinaryDistribution(Properties properties) {
-        super(properties);
         this.properties = properties;
     }
 
