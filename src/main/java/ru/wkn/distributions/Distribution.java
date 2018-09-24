@@ -1,6 +1,7 @@
 package ru.wkn.distributions;
 
 import java.util.Properties;
+import java.util.Random;
 
 public abstract class Distribution implements IDistribution {
 
@@ -11,10 +12,11 @@ public abstract class Distribution implements IDistribution {
     }
 
     protected double getRandomValue(double alpha) {
-        double random;
+        Random random = new Random();
+        double randomValue;
         do {
-            random = Math.random();
-        } while (random == alpha);
-        return random;
+            randomValue = random.nextDouble();
+        } while (randomValue == alpha);
+        return randomValue;
     }
 }
