@@ -14,24 +14,23 @@ public class QualityControl {
         this.significanceLevel = significanceLevel;
     }
 
-    public boolean isRealizationBelongsToDistribution(Distribution distribution, double coefficientForSegmentation, double thresholdValue) {
-        Interval[] intervals = intervals(distribution, coefficientForSegmentation);
-        int[] countsOfIntervals = countsOfIntervals(distribution, intervals);
-        double criterionOfPearson = criterionOfPearson(distribution, countsOfIntervals);
+    public boolean isRealizationBelongsToDistribution(Distribution distribution, double[] probabilities, int inputParameter, double coefficientForSegmentation, double thresholdValue) {
+        Interval[] intervals = intervals(inputParameter, coefficientForSegmentation);
+        int[] countsOfIntervals = countsOfIntervals(distribution, inputParameter, intervals);
+        double criterionOfPearson = criterionOfPearson(distribution, inputParameter, probabilities, countsOfIntervals);
         return !(criterionOfPearson > thresholdValue);
     }
 
-    private Interval[] intervals(Distribution distribution, double coefficientForSegmentation) {
-        int quantityOfPoints = distribution.getInputParameter();
-        double[] points = new double[quantityOfPoints];
-        for (int indexOfPoint = 0; indexOfPoint < quantityOfPoints; indexOfPoint++) {
+    private Interval[] intervals(int inputParameter, double coefficientForSegmentation) {
+        double[] points = new double[inputParameter];
+        for (int indexOfPoint = 0; indexOfPoint < inputParameter; indexOfPoint++) {
             points[indexOfPoint] = (1 / coefficientForSegmentation)
                     * (-Math.log(1 - indexOfPoint / coefficientForSegmentation));
         }
-        Interval[] intervals = new Interval[quantityOfPoints + 1];
+        Interval[] intervals = new Interval[inputParameter + 1];
         intervals[0] = new Interval(Double.NEGATIVE_INFINITY, points[0]);
-        if (quantityOfPoints > 2) {
-            for (int indexOfPoint = 1; indexOfPoint < quantityOfPoints - 2; indexOfPoint++) {
+        if (inputParameter > 2) {
+            for (int indexOfPoint = 1; indexOfPoint < inputParameter - 2; indexOfPoint++) {
                 intervals[indexOfPoint] = new Interval(points[indexOfPoint], points[indexOfPoint + 1]);
             }
         }
@@ -39,8 +38,8 @@ public class QualityControl {
         return intervals;
     }
 
-    private int[] countsOfIntervals(Distribution distribution, Interval[] intervals) {
-        int quantityOfIntervals = distribution.getInputParameter() + 1;
+    private int[] countsOfIntervals(Distribution distribution, int inputParameter, Interval[] intervals) {
+        int quantityOfIntervals = inputParameter + 1;
         int[] countsOfIntervals = new int[quantityOfIntervals];
         int quantityOfImplementations = distribution.getDistributionOfRandomVariables().length;
         if (intervals.length > 1) {
@@ -59,12 +58,11 @@ public class QualityControl {
         return countsOfIntervals;
     }
 
-    private double criterionOfPearson(Distribution distribution, int[] countsOfIntervals) {
+    private double criterionOfPearson(Distribution distribution, int inputParameter, double[] probabilities, int[] countsOfIntervals) {
         double criterionOfPearson = 0;
         int selectionSize = distribution.getDistributionOfRandomVariables().length;
-        int quantityOfIterations = distribution.getInputParameter();
-        for (int indexOfIteration = 0; indexOfIteration < quantityOfIterations; indexOfIteration++) {
-            double quantityOfProbabilities = selectionSize * distribution.getProbabilities()[indexOfIteration];
+        for (int indexOfIteration = 0; indexOfIteration < inputParameter; indexOfIteration++) {
+            double quantityOfProbabilities = selectionSize * probabilities[indexOfIteration];
             criterionOfPearson += Math.pow(countsOfIntervals[indexOfIteration]
                     - quantityOfProbabilities, 2) / quantityOfProbabilities;
         }
