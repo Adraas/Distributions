@@ -2,7 +2,8 @@ package ru.wkn.distributors.discrete;
 
 import ru.wkn.distributions.Distribution;
 import ru.wkn.distributors.Distributor;
-import ru.wkn.utils.QualityControl;
+
+import java.util.Random;
 
 public class BinomialDistributor extends Distributor {
 
@@ -12,11 +13,13 @@ public class BinomialDistributor extends Distributor {
         double currentAccumulatedProbability;
         double currentProbability;
         int frequency = 0;
+        Random random = new Random();
         for (int index = 0; index < selectionSize; index++) {
             attitudeOfSuccessToFailure = probabilities[index] / (1 - probabilities[index]);
             currentAccumulatedProbability = (1 - probabilities[index]) * selectionSize;
             currentProbability = currentAccumulatedProbability;
-            while (QualityControl.getSignificanceLevel() > currentAccumulatedProbability) {
+            double randomValue = random.nextDouble();
+            while (randomValue > currentAccumulatedProbability) {
                 frequency++;
                 currentProbability *= attitudeOfSuccessToFailure * (inputParameter - frequency + 1) / frequency;
                 currentAccumulatedProbability += currentProbability;
