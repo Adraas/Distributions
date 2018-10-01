@@ -1,8 +1,8 @@
-package ru.wkn.distributions;
+package ru.wkn.distributors;
 
 import java.util.Random;
 
-public abstract class Distribution implements IDistribution {
+public abstract class Distributor {
 
     protected double getRandomValue(double alpha) {
         Random random = new Random();

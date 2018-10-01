@@ -1,22 +1,14 @@
-package ru.wkn.distributions;
+package ru.wkn.distributors.discrete;
 
-import java.util.Properties;
+import ru.wkn.distributions.Distribution;
+import ru.wkn.distributors.Distributor;
 
-public class PoissonDistribution extends Distribution {
+public class PoissonDistributor extends Distributor {
 
-    private Properties properties;
-
-    public PoissonDistribution(Properties properties) {
-        this.properties = properties;
-    }
-
-    @Override
-    public double[] getDistribution() {
+    public Distribution getDistribution(int selectionSize, double lambda) {
         double alpha = 0;
-        int selectionSize = Integer.parseInt(properties.getProperty("selectionSize"));
         double[] distribution = new double[selectionSize];
         for (int index = 0; index < selectionSize; index++) {
-            double lambda = Double.parseDouble(properties.getProperty("lambda"));
             double exp = Math.exp(-lambda);
             double temp = exp;
             int currentValueOfDistribution = 0;
@@ -28,6 +20,6 @@ public class PoissonDistribution extends Distribution {
             }
             distribution[index] = currentValueOfDistribution;
         }
-        return distribution;
+        return new Distribution(distribution);
     }
 }
