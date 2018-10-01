@@ -23,6 +23,6 @@ public class BinomialDistributor extends Distributor {
             }
             distribution[index] = frequency;
         }
-        return new Distribution(distribution);
+        return new Distribution(distribution, probabilities, inputParameter);
     }
 }
