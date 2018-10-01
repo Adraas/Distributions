@@ -12,4 +12,6 @@
     <artifactId>distributors</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <name>Distributors</name>
+
 </project>

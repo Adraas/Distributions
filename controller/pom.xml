@@ -11,6 +11,9 @@
 
     <artifactId>controller</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <name>Controller</name>
+
     <dependencies>
         <dependency>
             <groupId>ru.ru.wkn</groupId>
@@ -19,6 +22,5 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-
 
 </project>
