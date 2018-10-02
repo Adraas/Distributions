@@ -27,8 +27,9 @@
     </properties>
 
     <modules>
-        <module>distributor</module>
+        <module>distributors</module>
         <module>view</module>
+        <module>controller</module>
     </modules>
 
     <build>
