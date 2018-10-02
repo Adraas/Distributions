@@ -32,20 +32,21 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Помощь">
                     <items>
-                        <MenuItem fx:id="menuItemAbout" mnemonicParsing="false" text="О программе"/>
+                        <MenuItem fx:id="menuItemAbout" mnemonicParsing="false" onAction="#clickOnMenuItemAbout"
+                                  text="О программе"/>
                     </items>
                 </Menu>
             </menus>
         </MenuBar>
-        <ListView layoutX="467.0" layoutY="39.0" prefHeight="209.0" prefWidth="246.0"/>
+        <ListView fx:id="listViewRandomVariable" layoutX="467.0" layoutY="39.0" prefHeight="209.0" prefWidth="246.0"/>
         <Button fx:id="buttonCheckByQualityControl" disable="true" layoutX="467.0" layoutY="362.0"
                 mnemonicParsing="false" onAction="#clickOnButtonCheckByQualityControl" prefHeight="25.0"
                 prefWidth="246.0" text="Проверка качества"/>
         <TextField fx:id="textFieldSizeOfSelection" layoutX="467.0" layoutY="258.0" prefHeight="25.0" prefWidth="246.0"
                    promptText="Введите размер выборки..."/>
-        <TextField layoutX="467.0" layoutY="295.0" prefHeight="25.0" prefWidth="246.0"
+        <TextField fx:id="textFieldParameterN" layoutX="467.0" layoutY="295.0" prefHeight="25.0" prefWidth="246.0"
                    promptText="Введите параметр n..."/>
-        <Button fx:id="buttonGenerate" layoutX="467.0" layoutY="329.0" mnemonicParsing="false"
-                onAction="#clickOnButtonGenerate" prefHeight="25.0" prefWidth="246.0" text="Сгенерировать СВ"/>
+        <Button layoutX="467.0" layoutY="329.0" mnemonicParsing="false" onAction="#clickOnButtonGenerate"
+                prefHeight="25.0" prefWidth="246.0" text="Сгенерировать СВ"/>
     </children>
 </AnchorPane>

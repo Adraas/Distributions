@@ -14,7 +14,8 @@ public class QualityControl {
         this.significanceLevel = significanceLevel;
     }
 
-    public boolean isRealizationBelongsToDistribution(Distribution distribution, double[] probabilities, int inputParameter, double coefficientForSegmentation, double thresholdValue) {
+    public boolean isRealizationBelongsToDistribution(Distribution distribution, int inputParameter, double coefficientForSegmentation, double thresholdValue) {
+        double[] probabilities = distribution.getProbabilities();
         Interval[] intervals = intervals(inputParameter, coefficientForSegmentation);
         int[] countsOfIntervals = countsOfIntervals(distribution, inputParameter, intervals);
         double criterionOfPearson = criterionOfPearson(distribution, inputParameter, probabilities, countsOfIntervals);

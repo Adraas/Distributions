@@ -17,6 +17,6 @@ public class UniformDistributor extends Distributor {
             currentValueOfDistribution = new BigDecimal(currentValueOfDistribution).setScale(5, RoundingMode.UP).doubleValue();
             distribution[index] = currentValueOfDistribution;
         }
-        return new Distribution(distribution);
+        return new Distribution(distribution, null);
     }
 }

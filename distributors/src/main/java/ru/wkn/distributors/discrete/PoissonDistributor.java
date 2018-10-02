@@ -20,6 +20,6 @@ public class PoissonDistributor extends Distributor {
             }
             distribution[index] = currentValueOfDistribution;
         }
-        return new Distribution(distribution);
+        return new Distribution(distribution, null);
     }
 }

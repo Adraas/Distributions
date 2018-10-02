@@ -9,7 +9,7 @@ public class DistributorFacade {
         DistributionFactory distributionFactoryIF;
         Distributor distributor;
         distributionFactoryIF = new DistributionFactory();
-        distributor = distributionFactoryIF.createDistributionByFilenameOfProperty(typeOfDistributor);
+        distributor = distributionFactoryIF.createDistributorByType(typeOfDistributor);
         return distributor;
     }
 }
