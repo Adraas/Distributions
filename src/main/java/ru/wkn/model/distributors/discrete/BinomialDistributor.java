@@ -16,11 +16,11 @@ public class BinomialDistributor extends Distributor {
         double currentAccumulatedProbability;
         double currentProbability;
         int frequency = 0;
+        double randomValue = 0;
         for (int index = 0; index < selectionSize; index++) {
             attitudeOfSuccessToFailure = probabilities[index] / (1 - probabilities[index]);
             currentAccumulatedProbability = (1 - probabilities[index]) * selectionSize;
             currentProbability = currentAccumulatedProbability;
-            double randomValue = 0;
             randomValue = super.getRandomValue(randomValue);
             while (randomValue > currentAccumulatedProbability) {
                 frequency++;
