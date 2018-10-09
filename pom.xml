@@ -8,7 +8,7 @@
     <artifactId>distributions</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>Distributions</name>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <developers>
         <developer>
@@ -25,12 +25,6 @@
         <jdk.version>8</jdk.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <modules>
-        <module>distributors</module>
-        <module>view</module>
-        <module>controller</module>
-    </modules>
 
     <build>
         <plugins>
