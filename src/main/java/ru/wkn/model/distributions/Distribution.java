@@ -2,16 +2,16 @@ package ru.wkn.model.distributions;
 
 public class Distribution {
 
-    private double[] distributionOfRandomVariables;
+    private double[] implementationOfRandomVariables;
     private double[] probabilities;
 
-    public Distribution(double[] distributionOfRandomVariables, double[] probabilities) {
-        this.distributionOfRandomVariables = distributionOfRandomVariables;
+    public Distribution(double[] implementationOfRandomVariables, double[] probabilities) {
+        this.implementationOfRandomVariables = implementationOfRandomVariables;
         this.probabilities = probabilities;
     }
 
-    public double[] getDistributionOfRandomVariables() {
-        return distributionOfRandomVariables;
+    public double[] getImplementationOfRandomVariable() {
+        return implementationOfRandomVariables;
     }
 
     public double[] getProbabilities() {

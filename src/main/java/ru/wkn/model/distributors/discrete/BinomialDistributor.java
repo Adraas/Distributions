@@ -11,7 +11,7 @@ public class BinomialDistributor extends Distributor {
         if (probabilities == null) {
             probabilities = probabilitiesByDefault(selectionSize);
         }
-        double[] distribution = new double[selectionSize];
+        double[] implementationOfRandomVariables = new double[selectionSize];
         double attitudeOfSuccessToFailure;
         double currentAccumulatedProbability;
         double currentProbability;
@@ -27,9 +27,9 @@ public class BinomialDistributor extends Distributor {
                 currentProbability *= attitudeOfSuccessToFailure * (inputParameter - frequency + 1) / frequency;
                 currentAccumulatedProbability += currentProbability;
             }
-            distribution[index] = frequency;
+            implementationOfRandomVariables[index] = frequency;
         }
-        return new Distribution(distribution, probabilities);
+        return new Distribution(implementationOfRandomVariables, probabilities);
     }
 
     private double[] probabilitiesByDefault(int selectionSize) {
