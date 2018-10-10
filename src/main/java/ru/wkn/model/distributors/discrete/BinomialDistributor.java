@@ -15,7 +15,7 @@ public class BinomialDistributor extends Distributor {
         double attitudeOfSuccessToFailure;
         double currentAccumulatedProbability;
         double currentProbability;
-        int frequency = 0;
+        int currentImplementation = 0;
         double randomValue = 0;
         for (int index = 0; index < selectionSize; index++) {
             attitudeOfSuccessToFailure = probabilities[index] / (1 - probabilities[index]);
@@ -23,11 +23,11 @@ public class BinomialDistributor extends Distributor {
             currentProbability = currentAccumulatedProbability;
             randomValue = super.getRandomValue(randomValue);
             while (randomValue > currentAccumulatedProbability) {
-                frequency++;
-                currentProbability *= attitudeOfSuccessToFailure * (inputParameter - frequency + 1) / frequency;
+                currentImplementation++;
+                currentProbability *= attitudeOfSuccessToFailure * (inputParameter - currentImplementation + 1) / currentImplementation;
                 currentAccumulatedProbability += currentProbability;
             }
-            implementationOfRandomVariables[index] = frequency;
+            implementationOfRandomVariables[index] = currentImplementation;
         }
         return new Distribution(implementationOfRandomVariables, probabilities);
     }
