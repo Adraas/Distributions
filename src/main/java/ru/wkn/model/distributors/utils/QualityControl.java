@@ -2,81 +2,82 @@ package ru.wkn.model.distributors.utils;
 
 import ru.wkn.model.distributions.Distribution;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class QualityControl {
 
-    public boolean isImplementationBelongsToDiscreteDistribution(Distribution distribution, int quantityOfIntervals,
-                                                         double significanceLevel, double thresholdValue) {
+    public boolean isImplementationBelongsToDiscreteDistribution(Distribution distribution, double significanceLevel, double thresholdValue) {
         double[] probabilities = distribution.getProbabilities();
-        double[] limitsForIntervals = limitsForIntervalsForDiscreteDistribution(distribution, quantityOfIntervals,
-                significanceLevel);
+        double[] limitsForIntervals = limitsForIntervalsForDiscreteDistribution(distribution, significanceLevel);
         Interval[] intervals = new Interval[0];
         try {
-            intervals = intervalsForDiscreteDistribution(limitsForIntervals, quantityOfIntervals);
+            intervals = intervalsForDiscreteDistribution(distribution, limitsForIntervals);
         } catch (LimitException e) {
             e.printStackTrace();
         }
-        int[] countsOfIntervals = countsOfIntervals(distribution, quantityOfIntervals, intervals);
-        double criterionOfPearson = criterionOfPearson(distribution, quantityOfIntervals, probabilities,
-                countsOfIntervals);
+        int[] countsOfIntervals = countsOfIntervals(distribution, intervals);
+        double criterionOfPearson = criterionOfPearson(probabilities, countsOfIntervals);
         return !(criterionOfPearson > thresholdValue);
     }
 
-    private double[] limitsForIntervalsForDiscreteDistribution(Distribution distribution, int quantityOfIntervals,
-                                                               double significanceLevel) { //TODO
+    private double[] limitsForIntervalsForDiscreteDistribution(Distribution distribution, double significanceLevel) {
         double[] probabilities = distribution.getProbabilities();
-        double[] limitsForIntervals = new double[quantityOfIntervals];
-        int size = probabilities.length;
-        for (int indexOfPoint = 0; indexOfPoint < quantityOfIntervals; indexOfPoint++) {
-            if (indexOfPoint < size) {
-                limitsForIntervals[indexOfPoint] = probabilities[indexOfPoint];
+        List<Double> limitsOfIntervals = new ArrayList<>();
+        int sizeOfSelection = probabilities.length;
+        int indexOfProbability = 0;
+        double currentLimit = 0;
+        while (indexOfProbability < sizeOfSelection) {
+            if (probabilities[indexOfProbability] < significanceLevel) {
+                currentLimit += probabilities[indexOfProbability];
+                indexOfProbability++;
+            } else {
+                limitsOfIntervals.add(currentLimit);
             }
         }
-        return limitsForIntervals;
+        return parseListToDoubleArray(limitsOfIntervals);
     }
 
-    private Interval[] intervalsForDiscreteDistribution(double[] limitsForIntervals, int quantityOfIntervals)
-            throws LimitException { //TODO
-        Interval[] intervals = new Interval[quantityOfIntervals + 1];
-        intervals[0] = new Interval(Double.NEGATIVE_INFINITY, limitsForIntervals[0]);
-        if (quantityOfIntervals > 2) {
-            for (int indexOfPoint = 1; indexOfPoint < quantityOfIntervals - 2; indexOfPoint++) {
-                intervals[indexOfPoint] = new Interval(limitsForIntervals[indexOfPoint],
-                        limitsForIntervals[indexOfPoint + 1]);
+    private double[] parseListToDoubleArray(List<Double> doubles) {
+        int size = doubles.size();
+        double[] doubleValues = new double[size];
+        for (int index = 0; index < size; index++) {
+            doubleValues[index] = doubles.get(index);
+        }
+        return doubleValues;
+    }
+
+    private Interval[] intervalsForDiscreteDistribution(Distribution distribution, double[] limitsOfIntervals) throws LimitException {
+        int quantityOfIntervals = limitsOfIntervals.length - 1;
+        Interval[] intervals = new Interval[quantityOfIntervals];
+        int indexOfImplementationOfRandomVariable = 0;
+        for (int indexOfLimit = 1; indexOfLimit < quantityOfIntervals; indexOfLimit++) {
+            intervals[indexOfLimit] = new Interval(limitsOfIntervals[indexOfLimit], limitsOfIntervals[indexOfLimit + 1]);
+            while (indexOfImplementationOfRandomVariable <= limitsOfIntervals[indexOfLimit]) {
+                intervals[indexOfLimit].addNewImplementationOfRandomVariable(distribution.getImplementationOfRandomVariable()[indexOfImplementationOfRandomVariable]);
+                indexOfImplementationOfRandomVariable++;
             }
         }
-        intervals[intervals.length - 1] = new Interval(limitsForIntervals[limitsForIntervals.length - 1],
-                Double.POSITIVE_INFINITY);
         return intervals;
     }
 
-    private int[] countsOfIntervals(Distribution distribution, int quantityOfIntervals, Interval[] intervals) {
-        int size = quantityOfIntervals + 1;
-        int[] countsOfIntervals = new int[size];
+    private int[] countsOfIntervals(Distribution distribution, Interval[] intervals) {
+        int quantityOfIntervals = intervals.length;
+        int[] countsOfIntervals = new int[quantityOfIntervals];
         int quantityOfImplementations = distribution.getImplementationOfRandomVariable().length;
-        if (intervals.length > 1) {
-            for (int indexOfInterval = 0; indexOfInterval < size; indexOfInterval++) {
-                for (int indexOfImplementation = 0;
-                     indexOfImplementation < quantityOfImplementations;
-                     indexOfImplementation++) {
-                    if (intervals[indexOfInterval]
-                            .isItContainsAnElement(distribution
-                                    .getImplementationOfRandomVariable()[indexOfImplementation])) {
-                        countsOfIntervals[indexOfInterval]++;
-                    }
-                }
-            }
+        for (int indexOfInterval = 0; indexOfInterval < quantityOfImplementations; indexOfInterval++) {
+            countsOfIntervals[indexOfInterval] = intervals[indexOfInterval].countOfIntervalValues();
         }
         return countsOfIntervals;
     }
 
-    private double criterionOfPearson(Distribution distribution, int quantityOfIntervals, double[] probabilities,
-                                      int[] countsOfIntervals) {
+    private double criterionOfPearson(double[] probabilities, int[] countsOfIntervals) {
+        int quantityOfIntervals = countsOfIntervals.length;
         double criterionOfPearson = 0;
-        int selectionSize = distribution.getImplementationOfRandomVariable().length;
+        int sizeOfSelection = probabilities.length;
         for (int indexOfIteration = 0; indexOfIteration < quantityOfIntervals; indexOfIteration++) {
-            double quantityOfProbabilities = selectionSize * probabilities[indexOfIteration];
-            criterionOfPearson += Math.pow(countsOfIntervals[indexOfIteration]
-                    - quantityOfProbabilities, 2) / quantityOfProbabilities;
+            double quantityOfProbabilities = sizeOfSelection * probabilities[indexOfIteration];
+            criterionOfPearson += Math.pow(countsOfIntervals[indexOfIteration] - quantityOfProbabilities, 2) / quantityOfProbabilities;
         }
         return criterionOfPearson;
     }
@@ -85,6 +86,7 @@ public class QualityControl {
 
         private double leftLimit;
         private double rightLimit;
+        private List<Double> implementationsOfRandomVariable;
 
         Interval(double leftLimit, double rightLimit) throws LimitException {
             if (leftLimit >= rightLimit) {
@@ -92,6 +94,15 @@ public class QualityControl {
             }
             this.leftLimit = leftLimit;
             this.rightLimit = rightLimit;
+            implementationsOfRandomVariable = new ArrayList<>();
+        }
+
+        void addNewImplementationOfRandomVariable(double implementationOfRandomVariable) {
+            implementationsOfRandomVariable.add(implementationOfRandomVariable);
+        }
+
+        int countOfIntervalValues() {
+            return implementationsOfRandomVariable.size();
         }
 
         boolean isItContainsAnElement(double implementationOfRandomVariable) {
