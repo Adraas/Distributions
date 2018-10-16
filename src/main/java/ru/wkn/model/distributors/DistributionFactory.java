@@ -1,6 +1,5 @@
-package ru.wkn.model.distributors.utils;
+package ru.wkn.model.distributors;
 
-import ru.wkn.model.distributors.Distributor;
 import ru.wkn.model.distributors.continuous.UniformDistributor;
 import ru.wkn.model.distributors.discrete.BinomialDistributor;
 import ru.wkn.model.distributors.discrete.PoissonDistributor;

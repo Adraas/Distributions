@@ -1,4 +1,4 @@
-package ru.wkn.model.distributors.utils;
+package ru.wkn.model.distributors;
 
 public interface DistributionFactoryIF<T> {
 

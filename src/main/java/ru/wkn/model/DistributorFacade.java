@@ -1,6 +1,7 @@
-package ru.wkn.model.distributors;
+package ru.wkn.model;
 
-import ru.wkn.model.distributors.utils.DistributionFactory;
+import ru.wkn.model.distributors.DistributionFactory;
+import ru.wkn.model.distributors.Distributor;
 
 public class DistributorFacade {
 
