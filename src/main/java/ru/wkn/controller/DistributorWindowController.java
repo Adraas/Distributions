@@ -13,8 +13,10 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import ru.wkn.model.DistributorFacade;
 import ru.wkn.model.distributions.Distribution;
+import ru.wkn.model.distributions.Interval;
+import ru.wkn.model.distributors.Distributor;
 import ru.wkn.model.distributors.discrete.BinomialDistributor;
-import ru.wkn.model.distributors.utils.QualityControl;
+import ru.wkn.model.utils.QualityControl;
 
 public class DistributorWindowController {
 
@@ -27,12 +29,21 @@ public class DistributorWindowController {
     @FXML
     private MenuItem menuItemAbout;
     @FXML
+    private Button buttonGenerate;
+    @FXML
     private Button buttonCheckByQualityControl;
     @FXML
     private TextField textFieldSizeOfSelection;
     @FXML
-    private TextField textFieldParameterN;
+    private TextField textFieldValueRange;
+    @FXML
+    private TextField textFieldQuantityOfIntervals;
+    @FXML
+    private TextField textFieldSignificanceLevel;
+    @FXML
+    private TextField textFieldThresholdValue;
     private Distribution distribution;
+    private Interval[] intervals;
 
     @FXML
     private void clickOnMenuItemClose() {
@@ -45,26 +56,34 @@ public class DistributorWindowController {
 
     @FXML
     private void clickOnButtonGenerate() {
-        if (!textFieldSizeOfSelection.getText().equals("") && !textFieldParameterN.getText().equals("")) {
+        if (!textFieldSizeOfSelection.getText().equals("")
+                && !textFieldValueRange.getText().equals("")
+                && !textFieldQuantityOfIntervals.getText().equals("")) {
             updateElementsContent();
             int sizeOfSelection = Integer.valueOf(textFieldSizeOfSelection.getText());
-            int parameterN = Integer.valueOf(textFieldParameterN.getText());
+            int valueRange = Integer.valueOf(textFieldValueRange.getText());
+            int quantityOfIntervals = Integer.valueOf(textFieldQuantityOfIntervals.getText());
             DistributorFacade distributorFacade = new DistributorFacade();
-            distribution = ((BinomialDistributor) distributorFacade
-                    .getDistributor("binomial-distributor"))
-                    .getDistribution(sizeOfSelection, parameterN, null);
-            drawOnBarChart(distribution);
-            fillTheListView(distribution);
+            Distributor distributor = distributorFacade
+                    .getDistributor("binomial-distributor");
+            distribution = ((BinomialDistributor) distributor)
+                    .getDistribution(sizeOfSelection, valueRange, null);
+            intervals = ((BinomialDistributor) distributor).intervalsOfDistribution(distribution, quantityOfIntervals);
+            drawOnBarChart();
+            fillTheListView();
             buttonCheckByQualityControl.setDisable(false);
         }
     }
 
     @FXML
     private void clickOnButtonCheckByQualityControl() {
-        if (!textFieldParameterN.getText().equals("")) {
+        if (!textFieldSignificanceLevel.getText().equals("")
+                && !textFieldThresholdValue.getText().equals("")) {
             QualityControl qualityControl = new QualityControl();
+            double significanceLevel = Double.valueOf(textFieldSignificanceLevel.getText());
+            double thresholdValue = Double.valueOf(textFieldThresholdValue.getText());
             boolean result = qualityControl
-                    .isImplementationBelongsToDiscreteDistribution(distribution, 0.15, 0.1);
+                    .isImplementationBelongsToDiscreteDistribution(distribution, significanceLevel, thresholdValue);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText("Контроль качества");
             alert.setContentText("Значение проверки по критерию Пирсона для заданной СВ: " + result);
@@ -73,21 +92,21 @@ public class DistributorWindowController {
         }
     }
 
-    private void drawOnBarChart(Distribution distribution) {
-        double[] distributionOfRandomVariables = distribution.getImplementationOfRandomVariable();
-        XYChart.Series<String, Double> dataOfSeries = new XYChart.Series<>();
+    private void drawOnBarChart() {
+        XYChart.Series<String, Integer> dataOfSeries = new XYChart.Series<>();
         dataOfSeries.setName("Случайные величины");
-        int selectionSize = distributionOfRandomVariables.length;
-        for (int indexOfRandomVariable = 0; indexOfRandomVariable < selectionSize; indexOfRandomVariable++) {
+        for (int indexOfRandomVariable = 0; indexOfRandomVariable < intervals.length; indexOfRandomVariable++) {
             dataOfSeries.getData().add(new XYChart.Data<>(String
-                    .valueOf(indexOfRandomVariable), distributionOfRandomVariables[indexOfRandomVariable]));
+                    .valueOf(indexOfRandomVariable),
+                    intervals[indexOfRandomVariable]
+                            .getPartOfDistribution().getImplementationsOfRandomVariable().length));
         }
         barChartDistributions.getData().add(dataOfSeries);
     }
 
-    private void fillTheListView(Distribution distribution) {
+    private void fillTheListView() {
         if (distribution != null) {
-            double[] distributionOfRandomVariables = distribution.getImplementationOfRandomVariable();
+            double[] distributionOfRandomVariables = distribution.getImplementationsOfRandomVariable();
             ObservableList<Double> observableList = FXCollections.observableArrayList();
             for (double distributionOfRandomVariable : distributionOfRandomVariables) {
                 observableList.add(distributionOfRandomVariable);

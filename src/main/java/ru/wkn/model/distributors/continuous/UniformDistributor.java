@@ -8,7 +8,7 @@ import java.math.RoundingMode;
 
 public class UniformDistributor extends Distributor {
 
-    public Distribution getDistribution(int selectionSize, double a, double b) {
+    public Distribution getDistribution(int selectionSize, double a, double b, double[] probabilities) {
         double currentValueOfDistribution = 0;
         double[] distribution = new double[selectionSize];
         for (int index = 0; index < selectionSize; index++) {
@@ -17,6 +17,6 @@ public class UniformDistributor extends Distributor {
             currentValueOfDistribution = new BigDecimal(currentValueOfDistribution).setScale(5, RoundingMode.UP).doubleValue();
             distribution[index] = currentValueOfDistribution;
         }
-        return new Distribution(distribution, null);
+        return new Distribution(distribution, probabilities);
     }
 }

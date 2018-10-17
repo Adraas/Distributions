@@ -12,6 +12,6 @@ public class Launcher extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        new DistributorWindow().windowInitialization("Distributor", 745, 401);
+        new DistributorWindow().windowInitialization("Distributor-WKN", 745, 401);
     }
 }
