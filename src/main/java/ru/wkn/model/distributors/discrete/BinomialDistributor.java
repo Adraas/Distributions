@@ -12,32 +12,22 @@ public class BinomialDistributor extends Distributor {
 
     public Distribution getDistribution(int selectionSize, int valueRange, double probability) {
         double[] distributionTable = probabilitiesByBinomialLaw(selectionSize, probability);
-        double[] implementationOfRandomVariables = new double[selectionSize];
-        double attitudeOfSuccessToFailure;
-        double currentAccumulatedProbability;
-        double currentProbability;
+        double[] implementationsOfRandomVariables = new double[selectionSize];
         int currentImplementationOfRandomVariable;
-        double randomValue = 0;
+        double randomValue;
 
         for (int indexOfProbability = 0; indexOfProbability < selectionSize; indexOfProbability++) {
             currentImplementationOfRandomVariable = 0;
-            attitudeOfSuccessToFailure = distributionTable[indexOfProbability]
-                    / (1 - distributionTable[indexOfProbability]);
-            currentAccumulatedProbability = Math.pow(1 - distributionTable[indexOfProbability], valueRange);
-            currentProbability = currentAccumulatedProbability;
-            randomValue = super.getRandomValue();
 
-            while (randomValue > currentAccumulatedProbability) {
-                currentImplementationOfRandomVariable++;
-                currentProbability *= attitudeOfSuccessToFailure
-                        * (valueRange - currentImplementationOfRandomVariable + 1)
-                        / currentImplementationOfRandomVariable;
-                currentAccumulatedProbability += currentProbability;
+            for (int i = 0; i < valueRange; i++) {
+                randomValue = super.getRandomValue();
+                if (randomValue < distributionTable[indexOfProbability]) {
+                    currentImplementationOfRandomVariable++;
+                }
             }
-
-            implementationOfRandomVariables[indexOfProbability] = currentImplementationOfRandomVariable;
+            implementationsOfRandomVariables[indexOfProbability] = currentImplementationOfRandomVariable;
         }
-        return new Distribution(implementationOfRandomVariables, distributionTable);
+        return new Distribution(implementationsOfRandomVariables, distributionTable);
     }
 
     public Interval[] intervalsOfDistribution(Distribution distribution, int quantityOfIntervals) {
