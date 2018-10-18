@@ -22,7 +22,8 @@ public class BinomialDistributor extends Distributor {
 
         for (int indexOfProbability = 0; indexOfProbability < selectionSize; indexOfProbability++) {
             currentImplementationOfRandomVariable = 0;
-            attitudeOfSuccessToFailure = distributionTable[indexOfProbability] / (1 - distributionTable[indexOfProbability]);
+            attitudeOfSuccessToFailure = distributionTable[indexOfProbability]
+                    / (1 - distributionTable[indexOfProbability]);
             currentAccumulatedProbability = Math.pow(1 - distributionTable[indexOfProbability], valueRange);
             currentProbability = currentAccumulatedProbability;
             randomValue = super.getRandomValue(randomValue);
@@ -51,19 +52,19 @@ public class BinomialDistributor extends Distributor {
         double minValueOfImplementationOfRandomVariable = implementationsOfRandomVariable[0];
         int increment = (int) ((maxValueOfImplementationOfRandomVariable - minValueOfImplementationOfRandomVariable)
                 / quantityOfIntervals);
-        int indexOfCurrentPartOfImplementationOfRandomVariable = 0;
+        int indexOfCurrentPartOfImplementationsOfRandomVariable = 0;
 
         for (int indexOfInterval = 0; indexOfInterval < intervals.length; indexOfInterval++) {
             List<Double> currentPartOfImplementationsOfRandomVariableAsList = new ArrayList<>();
             List<Double> currentPartOfDistributionTableAsList = new ArrayList<>();
 
-            while (implementationsOfRandomVariable[indexOfCurrentPartOfImplementationOfRandomVariable]
+            while (implementationsOfRandomVariable[indexOfCurrentPartOfImplementationsOfRandomVariable]
                     < increment * (indexOfInterval + 1)) {
                 currentPartOfImplementationsOfRandomVariableAsList
-                        .add(implementationsOfRandomVariable[indexOfCurrentPartOfImplementationOfRandomVariable]);
+                        .add(implementationsOfRandomVariable[indexOfCurrentPartOfImplementationsOfRandomVariable]);
                 currentPartOfDistributionTableAsList
-                        .add(distributionTable[indexOfCurrentPartOfImplementationOfRandomVariable]);
-                indexOfCurrentPartOfImplementationOfRandomVariable++;
+                        .add(distributionTable[indexOfCurrentPartOfImplementationsOfRandomVariable]);
+                indexOfCurrentPartOfImplementationsOfRandomVariable++;
             }
 
             double[] currentPartOfImplementationsOfRandomVariable
