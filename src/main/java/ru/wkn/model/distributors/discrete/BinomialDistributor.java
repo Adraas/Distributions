@@ -19,12 +19,14 @@ public class BinomialDistributor extends Distributor {
         double currentProbability;
         int currentImplementationOfRandomVariable;
         double randomValue = 0;
+
         for (int indexOfProbability = 0; indexOfProbability < selectionSize; indexOfProbability++) {
             currentImplementationOfRandomVariable = 0;
             attitudeOfSuccessToFailure = distributionTable[indexOfProbability] / (1 - distributionTable[indexOfProbability]);
             currentAccumulatedProbability = Math.pow(1 - distributionTable[indexOfProbability], valueRange);
             currentProbability = currentAccumulatedProbability;
             randomValue = super.getRandomValue(randomValue);
+
             while (randomValue > currentAccumulatedProbability) {
                 currentImplementationOfRandomVariable++;
                 currentProbability *= attitudeOfSuccessToFailure
@@ -32,6 +34,7 @@ public class BinomialDistributor extends Distributor {
                         / currentImplementationOfRandomVariable;
                 currentAccumulatedProbability += currentProbability;
             }
+
             implementationOfRandomVariables[indexOfProbability] = currentImplementationOfRandomVariable;
         }
         return new Distribution(implementationOfRandomVariables, distributionTable);
@@ -40,6 +43,7 @@ public class BinomialDistributor extends Distributor {
     public Interval[] intervalsOfDistribution(Distribution distribution, int quantityOfIntervals) {
         Interval[] intervals = new Interval[quantityOfIntervals];
         Arrays.sort(distribution.getDistributionRecords());
+
         double[] implementationsOfRandomVariable = distribution.getImplementationsOfRandomVariable();
         double[] distributionTable = distribution.getDistributionTable();
         double maxValueOfImplementationOfRandomVariable
@@ -48,9 +52,11 @@ public class BinomialDistributor extends Distributor {
         int increment = (int) ((maxValueOfImplementationOfRandomVariable - minValueOfImplementationOfRandomVariable)
                 / quantityOfIntervals);
         int indexOfCurrentPartOfImplementationOfRandomVariable = 0;
+
         for (int indexOfInterval = 0; indexOfInterval < intervals.length; indexOfInterval++) {
             List<Double> currentPartOfImplementationsOfRandomVariableAsList = new ArrayList<>();
             List<Double> currentPartOfDistributionTableAsList = new ArrayList<>();
+
             while (implementationsOfRandomVariable[indexOfCurrentPartOfImplementationOfRandomVariable]
                     < increment * (indexOfInterval + 1)) {
                 currentPartOfImplementationsOfRandomVariableAsList
@@ -59,9 +65,11 @@ public class BinomialDistributor extends Distributor {
                         .add(distributionTable[indexOfCurrentPartOfImplementationOfRandomVariable]);
                 indexOfCurrentPartOfImplementationOfRandomVariable++;
             }
+
             double[] currentPartOfImplementationsOfRandomVariable
                     = convertListDoubleToArray(currentPartOfImplementationsOfRandomVariableAsList);
             double[] currentPartOfDistributionTable = convertListDoubleToArray(currentPartOfDistributionTableAsList);
+
             Distribution currentPartOfDistribution
                     = new Distribution(currentPartOfImplementationsOfRandomVariable, currentPartOfDistributionTable);
             intervals[indexOfInterval]
