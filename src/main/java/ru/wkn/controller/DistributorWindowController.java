@@ -6,11 +6,10 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import ru.wkn.model.DistributorFacade;
 import ru.wkn.model.distributions.Distribution;
 import ru.wkn.model.distributions.Interval;
@@ -29,17 +28,13 @@ public class DistributorWindowController {
     @FXML
     private MenuItem menuItemAbout;
     @FXML
-    private Button buttonGenerate;
-    @FXML
-    private Button buttonCheckByQualityControl;
+    private GridPane gridPaneQualityControl;
     @FXML
     private TextField textFieldSizeOfSelection;
     @FXML
     private TextField textFieldValueRange;
     @FXML
     private TextField textFieldQuantityOfIntervals;
-    @FXML
-    private TextField textFieldSignificanceLevel;
     @FXML
     private TextField textFieldThresholdValue;
     private Distribution distribution;
@@ -67,27 +62,24 @@ public class DistributorWindowController {
             Distributor distributor = distributorFacade
                     .getDistributor("binomial-distributor");
             distribution = ((BinomialDistributor) distributor)
-                    .getDistribution(sizeOfSelection, valueRange, null);
+                    .getDistribution(sizeOfSelection, valueRange, 0.5);
             intervals = ((BinomialDistributor) distributor).intervalsOfDistribution(distribution, quantityOfIntervals);
             drawOnBarChart();
             fillTheListView();
-            buttonCheckByQualityControl.setDisable(false);
+            gridPaneQualityControl.setDisable(false);
         }
     }
 
     @FXML
     private void clickOnButtonCheckByQualityControl() {
-        if (!textFieldSignificanceLevel.getText().equals("")
-                && !textFieldThresholdValue.getText().equals("")) {
-            QualityControl qualityControl = new QualityControl();
-            double significanceLevel = Double.valueOf(textFieldSignificanceLevel.getText());
+        if (!textFieldThresholdValue.getText().equals("")) {
             double thresholdValue = Double.valueOf(textFieldThresholdValue.getText());
-            boolean result = qualityControl
-                    .isImplementationBelongsToDiscreteDistribution(distribution, significanceLevel, thresholdValue);
+            boolean result = QualityControl
+                    .isImplementationBelongsToDiscreteDistribution(intervals, distribution, thresholdValue);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Distributor-WKN");
             alert.setHeaderText("Контроль качества");
             alert.setContentText("Значение проверки по критерию Пирсона для заданной СВ: " + result);
-            alert.getButtonTypes().add(ButtonType.OK);
             alert.show();
         }
     }
@@ -98,8 +90,7 @@ public class DistributorWindowController {
         for (int indexOfRandomVariable = 0; indexOfRandomVariable < intervals.length; indexOfRandomVariable++) {
             dataOfSeries.getData().add(new XYChart.Data<>(String
                     .valueOf(indexOfRandomVariable),
-                    intervals[indexOfRandomVariable]
-                            .getPartOfDistribution().getImplementationsOfRandomVariable().length));
+                    intervals[indexOfRandomVariable].countOfIntervalValues()));
         }
         barChartDistributions.getData().add(dataOfSeries);
     }
