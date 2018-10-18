@@ -12,7 +12,7 @@ public class PoissonDistributor extends Distributor {
             double exp = Math.exp(-lambda);
             double temp = exp;
             int currentValueOfDistribution = 0;
-            alpha = super.getRandomValue(alpha);
+            alpha = super.getRandomValue();
             while (temp < alpha) {
                 currentValueOfDistribution++;
                 exp *= lambda / currentValueOfDistribution;

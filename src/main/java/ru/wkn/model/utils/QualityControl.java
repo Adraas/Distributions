@@ -27,9 +27,9 @@ public class QualityControl {
     private static double criterionOfPearson(double[] distributionTable, int[] countsOfIntervals) {
         int quantityOfIntervals = countsOfIntervals.length;
         double criterionOfPearson = 0;
-        int sizeOfSelection = distributionTable.length;
+        int selectionSize = distributionTable.length;
         for (int indexOfIteration = 0; indexOfIteration < quantityOfIntervals; indexOfIteration++) {
-            double quantityOfProbabilities = sizeOfSelection * distributionTable[indexOfIteration];
+            double quantityOfProbabilities = selectionSize * distributionTable[indexOfIteration];
             criterionOfPearson += Math.pow(countsOfIntervals[indexOfIteration] - quantityOfProbabilities, 2)
                     / quantityOfProbabilities;
         }

@@ -7,7 +7,6 @@ import ru.wkn.model.distributors.Distributor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class BinomialDistributor extends Distributor {
 
@@ -26,7 +25,7 @@ public class BinomialDistributor extends Distributor {
                     / (1 - distributionTable[indexOfProbability]);
             currentAccumulatedProbability = Math.pow(1 - distributionTable[indexOfProbability], valueRange);
             currentProbability = currentAccumulatedProbability;
-            randomValue = super.getRandomValue(randomValue);
+            randomValue = super.getRandomValue();
 
             while (randomValue > currentAccumulatedProbability) {
                 currentImplementationOfRandomVariable++;
@@ -90,10 +89,30 @@ public class BinomialDistributor extends Distributor {
 
     private double[] probabilitiesByBinomialLaw(int selectionSize, double probability) {
         double[] probabilities = new double[selectionSize];
-        Random random = new Random();
+        double probabilityOfFailure = 1 - probability;
         for (int indexOfProbability = 0; indexOfProbability < selectionSize; indexOfProbability++) {
-            probabilities[indexOfProbability] = random.nextDouble();
+            probabilities[indexOfProbability] = combinations(selectionSize, indexOfProbability)
+                    * Math.pow(probability, indexOfProbability)
+                    * Math.pow(probabilityOfFailure, selectionSize - indexOfProbability);
         }
         return probabilities;
+    }
+
+    private int combinations(int generalValue, int currentValue) {
+        int combinations = 0;
+        if (currentValue <= generalValue) {
+            combinations
+                    = generalValue == 0 && currentValue == 0 ? 1
+                    : currentValue == 0 ? 1
+                    : generalValue == currentValue ? 1
+                    : factorialByFunctionOfStirling(generalValue)
+                    / (factorialByFunctionOfStirling(currentValue)
+                    * factorialByFunctionOfStirling(generalValue - currentValue));
+        }
+        return combinations;
+    }
+
+    private int factorialByFunctionOfStirling(int value) {
+        return (int) Math.round(Math.sqrt(2 * Math.PI * value) * Math.pow(value / Math.E, value));
     }
 }

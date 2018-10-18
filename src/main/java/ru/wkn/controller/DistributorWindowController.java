@@ -8,6 +8,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import ru.wkn.model.DistributorFacade;
@@ -29,6 +30,8 @@ public class DistributorWindowController {
     private MenuItem menuItemAbout;
     @FXML
     private GridPane gridPaneQualityControl;
+    @FXML
+    private Slider sliderProbability;
     @FXML
     private TextField textFieldSizeOfSelection;
     @FXML
@@ -55,15 +58,19 @@ public class DistributorWindowController {
                 && !textFieldValueRange.getText().equals("")
                 && !textFieldQuantityOfIntervals.getText().equals("")) {
             updateElementsContent();
+
             int sizeOfSelection = Integer.valueOf(textFieldSizeOfSelection.getText());
             int valueRange = Integer.valueOf(textFieldValueRange.getText());
             int quantityOfIntervals = Integer.valueOf(textFieldQuantityOfIntervals.getText());
+            double probability = sliderProbability.getValue();
+
             DistributorFacade distributorFacade = new DistributorFacade();
             Distributor distributor = distributorFacade
                     .getDistributor("binomial-distributor");
             distribution = ((BinomialDistributor) distributor)
-                    .getDistribution(sizeOfSelection, valueRange, 0.5);
+                    .getDistribution(sizeOfSelection, valueRange, probability);
             intervals = ((BinomialDistributor) distributor).intervalsOfDistribution(distribution, quantityOfIntervals);
+
             drawOnBarChart();
             fillTheListView();
             gridPaneQualityControl.setDisable(false);
@@ -76,6 +83,7 @@ public class DistributorWindowController {
             double thresholdValue = Double.valueOf(textFieldThresholdValue.getText());
             boolean result = QualityControl
                     .isImplementationBelongsToDiscreteDistribution(intervals, distribution, thresholdValue);
+
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Distributor-WKN");
             alert.setHeaderText("Контроль качества");
@@ -87,6 +95,7 @@ public class DistributorWindowController {
     private void drawOnBarChart() {
         XYChart.Series<String, Integer> dataOfSeries = new XYChart.Series<>();
         dataOfSeries.setName("Случайные величины");
+
         for (int indexOfRandomVariable = 0; indexOfRandomVariable < intervals.length; indexOfRandomVariable++) {
             dataOfSeries.getData().add(new XYChart.Data<>(String
                     .valueOf(indexOfRandomVariable),
@@ -99,6 +108,7 @@ public class DistributorWindowController {
         if (distribution != null) {
             double[] distributionOfRandomVariables = distribution.getImplementationsOfRandomVariable();
             ObservableList<Double> observableList = FXCollections.observableArrayList();
+
             for (double distributionOfRandomVariable : distributionOfRandomVariables) {
                 observableList.add(distributionOfRandomVariable);
             }
