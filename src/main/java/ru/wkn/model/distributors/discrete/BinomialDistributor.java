@@ -37,17 +37,25 @@ public class BinomialDistributor extends Distributor {
         double maxValueOfImplementationOfRandomVariable
                 = implementationsOfRandomVariable[implementationsOfRandomVariable.length - 1];
         double minValueOfImplementationOfRandomVariable = implementationsOfRandomVariable[0];
+
         int increment = (int) ((maxValueOfImplementationOfRandomVariable - minValueOfImplementationOfRandomVariable)
                 / quantityOfIntervals);
-        int indexOfCurrentPartOfImplementationsOfRandomVariable = 0;
+        if (increment == 0) {
+            increment = 1;
+        }
 
-        for (int indexOfInterval = 0; indexOfInterval < intervals.length; indexOfInterval++) {
+        int indexOfCurrentPartOfImplementationsOfRandomVariable = 0;
+        int distributionPartSize = distribution.getImplementationsOfRandomVariables().length;
+
+        for (int indexOfInterval = 0; indexOfInterval < quantityOfIntervals; indexOfInterval++) {
             List<Double> currentPartOfImplementationsOfRandomVariableAsList = new ArrayList<>();
 
-            while (implementationsOfRandomVariable[indexOfCurrentPartOfImplementationsOfRandomVariable]
-                    < increment * (indexOfInterval + 1)) {
+            while (indexOfCurrentPartOfImplementationsOfRandomVariable < distributionPartSize
+                    && implementationsOfRandomVariable[indexOfCurrentPartOfImplementationsOfRandomVariable]
+                    - (minValueOfImplementationOfRandomVariable - 1) < increment * (indexOfInterval + 1)) {
                 currentPartOfImplementationsOfRandomVariableAsList
                         .add(implementationsOfRandomVariable[indexOfCurrentPartOfImplementationsOfRandomVariable]);
+                indexOfCurrentPartOfImplementationsOfRandomVariable++;
             }
 
             double[] currentPartOfImplementationsOfRandomVariable
