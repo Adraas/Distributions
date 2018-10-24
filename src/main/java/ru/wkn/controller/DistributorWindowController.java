@@ -106,7 +106,7 @@ public class DistributorWindowController {
 
     private void fillTheListView() {
         if (distribution != null) {
-            double[] distributionOfRandomVariables = distribution.getImplementationsOfRandomVariable();
+            double[] distributionOfRandomVariables = distribution.getImplementationsOfRandomVariables();
             ObservableList<Double> observableList = FXCollections.observableArrayList();
 
             for (double distributionOfRandomVariable : distributionOfRandomVariables) {

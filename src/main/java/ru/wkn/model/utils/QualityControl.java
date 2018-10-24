@@ -9,9 +9,8 @@ public class QualityControl {
             Interval[] intervals,
             Distribution distribution,
             double thresholdValue) {
-        double[] distributionTable = distribution.getDistributionTable();
         int[] countsOfIntervals = countsOfIntervals(intervals);
-        double criterionOfPearson = criterionOfPearson(distributionTable, countsOfIntervals);
+        double criterionOfPearson = criterionOfPearson(distribution, countsOfIntervals);
         return !(criterionOfPearson > thresholdValue);
     }
 
@@ -24,13 +23,12 @@ public class QualityControl {
         return countsOfIntervals;
     }
 
-    private static double criterionOfPearson(double[] distributionTable, int[] countsOfIntervals) {
-        int quantityOfIntervals = countsOfIntervals.length;
+    private static double criterionOfPearson(Distribution distribution, int[] countsOfIntervals) {
         double criterionOfPearson = 0;
-        int selectionSize = distributionTable.length;
-        for (int indexOfIteration = 0; indexOfIteration < quantityOfIntervals; indexOfIteration++) {
-            double quantityOfProbabilities = selectionSize * distributionTable[indexOfIteration];
-            criterionOfPearson += Math.pow(countsOfIntervals[indexOfIteration] - quantityOfProbabilities, 2)
+        for (int countsOfInterval : countsOfIntervals) {
+            double quantityOfProbabilities = distribution.getImplementationsOfRandomVariables().length
+                    * distribution.getProbability();
+            criterionOfPearson += Math.pow(countsOfInterval - quantityOfProbabilities, 2)
                     / quantityOfProbabilities;
         }
         return criterionOfPearson;

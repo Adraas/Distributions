@@ -11,7 +11,6 @@ import java.util.List;
 public class BinomialDistributor extends Distributor {
 
     public Distribution getDistribution(int selectionSize, int valueRange, double probability) {
-        double[] distributionTable = probabilitiesByBinomialLaw(selectionSize, probability);
         double[] implementationsOfRandomVariables = new double[selectionSize];
         int currentImplementationOfRandomVariable;
         double randomValue;
@@ -21,21 +20,20 @@ public class BinomialDistributor extends Distributor {
 
             for (int i = 0; i < valueRange; i++) {
                 randomValue = super.getRandomValue();
-                if (randomValue < distributionTable[indexOfProbability]) {
+                if (randomValue < probability) {
                     currentImplementationOfRandomVariable++;
                 }
             }
             implementationsOfRandomVariables[indexOfProbability] = currentImplementationOfRandomVariable;
         }
-        return new Distribution(implementationsOfRandomVariables, distributionTable);
+        return new Distribution(implementationsOfRandomVariables, probability);
     }
 
     public Interval[] intervalsOfDistribution(Distribution distribution, int quantityOfIntervals) {
         Interval[] intervals = new Interval[quantityOfIntervals];
-        Arrays.sort(distribution.getDistributionRecords());
+        Arrays.sort(distribution.getImplementationsOfRandomVariables());
 
-        double[] implementationsOfRandomVariable = distribution.getImplementationsOfRandomVariable();
-        double[] distributionTable = distribution.getDistributionTable();
+        double[] implementationsOfRandomVariable = distribution.getImplementationsOfRandomVariables();
         double maxValueOfImplementationOfRandomVariable
                 = implementationsOfRandomVariable[implementationsOfRandomVariable.length - 1];
         double minValueOfImplementationOfRandomVariable = implementationsOfRandomVariable[0];
@@ -45,23 +43,18 @@ public class BinomialDistributor extends Distributor {
 
         for (int indexOfInterval = 0; indexOfInterval < intervals.length; indexOfInterval++) {
             List<Double> currentPartOfImplementationsOfRandomVariableAsList = new ArrayList<>();
-            List<Double> currentPartOfDistributionTableAsList = new ArrayList<>();
 
             while (implementationsOfRandomVariable[indexOfCurrentPartOfImplementationsOfRandomVariable]
                     < increment * (indexOfInterval + 1)) {
                 currentPartOfImplementationsOfRandomVariableAsList
                         .add(implementationsOfRandomVariable[indexOfCurrentPartOfImplementationsOfRandomVariable]);
-                currentPartOfDistributionTableAsList
-                        .add(distributionTable[indexOfCurrentPartOfImplementationsOfRandomVariable]);
-                indexOfCurrentPartOfImplementationsOfRandomVariable++;
             }
 
             double[] currentPartOfImplementationsOfRandomVariable
                     = convertListDoubleToArray(currentPartOfImplementationsOfRandomVariableAsList);
-            double[] currentPartOfDistributionTable = convertListDoubleToArray(currentPartOfDistributionTableAsList);
 
             Distribution currentPartOfDistribution
-                    = new Distribution(currentPartOfImplementationsOfRandomVariable, currentPartOfDistributionTable);
+                    = new Distribution(currentPartOfImplementationsOfRandomVariable, distribution.getProbability());
             intervals[indexOfInterval]
                     = new Interval(currentPartOfDistribution);
         }
@@ -75,34 +68,5 @@ public class BinomialDistributor extends Distributor {
             doubles[index] = list.get(index);
         }
         return doubles;
-    }
-
-    private double[] probabilitiesByBinomialLaw(int selectionSize, double probability) {
-        double[] probabilities = new double[selectionSize];
-        double probabilityOfFailure = 1 - probability;
-        for (int indexOfProbability = 0; indexOfProbability < selectionSize; indexOfProbability++) {
-            probabilities[indexOfProbability] = combinations(selectionSize, indexOfProbability)
-                    * Math.pow(probability, indexOfProbability)
-                    * Math.pow(probabilityOfFailure, selectionSize - indexOfProbability);
-        }
-        return probabilities;
-    }
-
-    private int combinations(int generalValue, int currentValue) {
-        int combinations = 0;
-        if (currentValue <= generalValue) {
-            combinations
-                    = generalValue == 0 && currentValue == 0 ? 1
-                    : currentValue == 0 ? 1
-                    : generalValue == currentValue ? 1
-                    : factorialByFunctionOfStirling(generalValue)
-                    / (factorialByFunctionOfStirling(currentValue)
-                    * factorialByFunctionOfStirling(generalValue - currentValue));
-        }
-        return combinations;
-    }
-
-    private int factorialByFunctionOfStirling(int value) {
-        return (int) Math.round(Math.sqrt(2 * Math.PI * value) * Math.pow(value / Math.E, value));
     }
 }

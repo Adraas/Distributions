@@ -9,7 +9,7 @@ public class Interval {
     }
 
     public int countOfIntervalValues() {
-        return partOfDistribution.getImplementationsOfRandomVariable().length;
+        return partOfDistribution.getImplementationsOfRandomVariables().length;
     }
 
     public Distribution getPartOfDistribution() {

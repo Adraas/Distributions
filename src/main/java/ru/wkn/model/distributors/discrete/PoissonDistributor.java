@@ -5,7 +5,7 @@ import ru.wkn.model.distributors.Distributor;
 
 public class PoissonDistributor extends Distributor {
 
-    public Distribution getDistribution(int selectionSize, double lambda, double[] probabilities) {
+    public Distribution getDistribution(int selectionSize, double lambda, double probability) {
         double alpha = 0;
         double[] distribution = new double[selectionSize];
         for (int index = 0; index < selectionSize; index++) {
@@ -20,6 +20,6 @@ public class PoissonDistributor extends Distributor {
             }
             distribution[index] = currentValueOfDistribution;
         }
-        return new Distribution(distribution, probabilities);
+        return new Distribution(distribution, probability);
     }
 }
