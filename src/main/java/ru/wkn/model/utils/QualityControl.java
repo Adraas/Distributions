@@ -1,35 +1,49 @@
 package ru.wkn.model.utils;
 
-import ru.wkn.model.distributions.Distribution;
 import ru.wkn.model.distributions.Interval;
 
 public class QualityControl {
 
     public static boolean isImplementationBelongsToDiscreteDistribution(
             Interval[] intervals,
-            Distribution distribution,
             double thresholdValue) {
-        int[] countsOfIntervals = countsOfIntervals(intervals);
-        double criterionOfPearson = criterionOfPearson(distribution, countsOfIntervals);
+        int[] experimentalFrequencies = getExperimentalFrequencies(intervals);
+        int[] theoreticalFrequencies = getTheoreticalFrequencies(intervals);
+        double criterionOfPearson = getCriterionOfPearson(experimentalFrequencies, theoreticalFrequencies);
         return !(criterionOfPearson > thresholdValue);
     }
 
-    private static int[] countsOfIntervals(Interval[] intervals) {
+    private static int[] getExperimentalFrequencies(Interval[] intervals) {
         int quantityOfIntervals = intervals.length;
-        int[] countsOfIntervals = new int[quantityOfIntervals];
+        int[] frequencies = new int[quantityOfIntervals];
         for (int indexOfInterval = 0; indexOfInterval < quantityOfIntervals; indexOfInterval++) {
-            countsOfIntervals[indexOfInterval] = intervals[indexOfInterval].countOfIntervalValues();
+            frequencies[indexOfInterval] = intervals[indexOfInterval].countOfIntervalValues();
         }
-        return countsOfIntervals;
+        return frequencies;
     }
 
-    private static double criterionOfPearson(Distribution distribution, int[] countsOfIntervals) {
+    private static int[] getTheoreticalFrequencies(Interval[] intervals) {
+        int quantityOfIntervals = intervals.length;
+        int[] frequencies = new int[quantityOfIntervals];
+        double probability;
+        for (int indexOfInterval = 0; indexOfInterval < quantityOfIntervals; indexOfInterval++) {
+            probability = intervals[indexOfInterval].getPartOfDistribution().getProbability();
+            for (double randomVariable
+                    : intervals[indexOfInterval].getPartOfDistribution().getImplementationsOfRandomVariables()) {
+                frequencies[indexOfInterval] += probability * randomVariable;
+            }
+        }
+        return frequencies;
+    }
+
+    private static double getCriterionOfPearson(int[] experimentalFrequencies, int[] theoreticalFrequencies) {
         double criterionOfPearson = 0;
-        for (int countsOfInterval : countsOfIntervals) {
-            double quantityOfProbabilities = distribution.getImplementationsOfRandomVariables().length
-                    * distribution.getProbability();
-            criterionOfPearson += Math.pow(countsOfInterval - quantityOfProbabilities, 2)
-                    / quantityOfProbabilities;
+        int iterations = experimentalFrequencies.length;
+        for (int i = 0; i < iterations; i++) {
+            if (theoreticalFrequencies[i] != 0) {
+                criterionOfPearson += Math.pow(experimentalFrequencies[i] - theoreticalFrequencies[i], 2)
+                        / theoreticalFrequencies[i];
+            }
         }
         return criterionOfPearson;
     }
