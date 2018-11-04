@@ -33,7 +33,7 @@ public class DistributorWindowController {
     @FXML
     private Slider sliderProbability;
     @FXML
-    private TextField textFieldSizeOfSelection;
+    private TextField textFieldSelectionSize;
     @FXML
     private TextField textFieldValueRange;
     @FXML
@@ -54,12 +54,12 @@ public class DistributorWindowController {
 
     @FXML
     private void clickOnButtonGenerate() {
-        if (!textFieldSizeOfSelection.getText().equals("")
+        if (!textFieldSelectionSize.getText().equals("")
                 && !textFieldValueRange.getText().equals("")
                 && !textFieldQuantityOfIntervals.getText().equals("")) {
             updateElementsContent();
 
-            int sizeOfSelection = Integer.valueOf(textFieldSizeOfSelection.getText());
+            int selectionSize = Integer.valueOf(textFieldSelectionSize.getText());
             int valueRange = Integer.valueOf(textFieldValueRange.getText());
             int quantityOfIntervals = Integer.valueOf(textFieldQuantityOfIntervals.getText());
             double probability = sliderProbability.getValue();
@@ -68,8 +68,8 @@ public class DistributorWindowController {
             Distributor distributor = distributorFacade
                     .getDistributor("binomial-distributor");
             distribution = ((BinomialDistributor) distributor)
-                    .getDistribution(sizeOfSelection, valueRange, probability);
-            intervals = ((BinomialDistributor) distributor).intervalsOfDistribution(distribution, quantityOfIntervals);
+                    .getDistribution(selectionSize, valueRange, probability);
+            intervals = distribution.intervals(quantityOfIntervals);
 
             drawOnBarChart();
             fillTheListView();
@@ -82,7 +82,7 @@ public class DistributorWindowController {
         if (!textFieldThresholdValue.getText().equals("")) {
             double thresholdValue = Double.valueOf(textFieldThresholdValue.getText());
             boolean result = QualityControl
-                    .isImplementationBelongsToDiscreteDistribution(intervals, thresholdValue);
+                    .isImplementationBelongsToCurrentDistribution(intervals, thresholdValue);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Distributor-WKN");
@@ -106,7 +106,7 @@ public class DistributorWindowController {
 
     private void fillTheListView() {
         if (distribution != null) {
-            double[] distributionOfRandomVariables = distribution.getImplementationsOfRandomVariables();
+            double[] distributionOfRandomVariables = distribution.getRandomSample();
             ObservableList<Double> observableList = FXCollections.observableArrayList();
 
             for (double distributionOfRandomVariable : distributionOfRandomVariables) {

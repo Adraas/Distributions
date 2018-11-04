@@ -4,7 +4,7 @@ import ru.wkn.model.distributions.Interval;
 
 public class QualityControl {
 
-    public static boolean isImplementationBelongsToDiscreteDistribution(
+    public static boolean isImplementationBelongsToCurrentDistribution(
             Interval[] intervals,
             double thresholdValue) {
         int[] experimentalFrequencies = getExperimentalFrequencies(intervals);
@@ -29,7 +29,7 @@ public class QualityControl {
         for (int indexOfInterval = 0; indexOfInterval < quantityOfIntervals; indexOfInterval++) {
             probability = intervals[indexOfInterval].getPartOfDistribution().getProbability();
             for (double randomVariable
-                    : intervals[indexOfInterval].getPartOfDistribution().getImplementationsOfRandomVariables()) {
+                    : intervals[indexOfInterval].getPartOfDistribution().getRandomSample()) {
                 frequencies[indexOfInterval] += probability * randomVariable;
             }
         }
