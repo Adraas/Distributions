@@ -6,9 +6,10 @@ public class QualityControl {
 
     public static boolean isImplementationBelongsToCurrentDistribution(
             Interval[] intervals,
+            double[] theoreticalProbabilities,
             double thresholdValue) {
         int[] experimentalFrequencies = getExperimentalFrequencies(intervals);
-        int[] theoreticalFrequencies = getTheoreticalFrequencies(intervals);
+        int[] theoreticalFrequencies = getTheoreticalFrequencies(theoreticalProbabilities, intervals);
         double criterionOfPearson = getCriterionOfPearson(experimentalFrequencies, theoreticalFrequencies);
         return !(criterionOfPearson > thresholdValue);
     }
@@ -22,15 +23,17 @@ public class QualityControl {
         return frequencies;
     }
 
-    private static int[] getTheoreticalFrequencies(Interval[] intervals) {
+    private static int[] getTheoreticalFrequencies(double[] theoreticalProbabilities, Interval[] intervals) {
+        int selectionSize = theoreticalProbabilities.length;
         int quantityOfIntervals = intervals.length;
         int[] frequencies = new int[quantityOfIntervals];
-        double probability;
+        int indexOfProbability = 0;
+
         for (int indexOfInterval = 0; indexOfInterval < quantityOfIntervals; indexOfInterval++) {
-            probability = intervals[indexOfInterval].getPartOfDistribution().getProbability();
-            for (double randomVariable
+            for (double ignored
                     : intervals[indexOfInterval].getPartOfDistribution().getRandomSample()) {
-                frequencies[indexOfInterval] += probability * randomVariable;
+                frequencies[indexOfInterval] += theoreticalProbabilities[indexOfProbability] * selectionSize;
+                indexOfProbability++;
             }
         }
         return frequencies;
@@ -43,6 +46,8 @@ public class QualityControl {
             if (theoreticalFrequencies[i] != 0) {
                 criterionOfPearson += Math.pow(experimentalFrequencies[i] - theoreticalFrequencies[i], 2)
                         / theoreticalFrequencies[i];
+            } else {
+                criterionOfPearson++;
             }
         }
         return criterionOfPearson;

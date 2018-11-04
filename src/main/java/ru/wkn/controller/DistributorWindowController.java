@@ -82,7 +82,7 @@ public class DistributorWindowController {
         if (!textFieldThresholdValue.getText().equals("")) {
             double thresholdValue = Double.valueOf(textFieldThresholdValue.getText());
             boolean result = QualityControl
-                    .isImplementationBelongsToCurrentDistribution(intervals, thresholdValue);
+                    .isImplementationBelongsToCurrentDistribution(intervals, distribution.theoreticalProbabilities(), thresholdValue);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Distributor-WKN");

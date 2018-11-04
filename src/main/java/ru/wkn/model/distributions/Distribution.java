@@ -72,9 +72,11 @@ public class Distribution {
         return doubles;
     }
 
-    public double[] theoreticalProbabilities(int selectionSize, double probability) {
+    public double[] theoreticalProbabilities() {
+        int selectionSize = randomSample.length;
         double[] probabilities = new double[selectionSize];
         double probabilityOfFailure = 1 - probability;
+
         for (int indexOfProbability = 0; indexOfProbability < selectionSize; indexOfProbability++) {
             probabilities[indexOfProbability] = combinations(selectionSize, indexOfProbability)
                     * Math.pow(probability, indexOfProbability)
