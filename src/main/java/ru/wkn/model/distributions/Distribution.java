@@ -78,28 +78,27 @@ public class Distribution {
         double probabilityOfFailure = 1 - probability;
 
         for (int indexOfProbability = 0; indexOfProbability < selectionSize; indexOfProbability++) {
-            probabilities[indexOfProbability] = combinations(selectionSize, indexOfProbability)
+            probabilities[indexOfProbability] = СombinatorialAnalysis.combinations(selectionSize, indexOfProbability)
                     * Math.pow(probability, indexOfProbability)
                     * Math.pow(probabilityOfFailure, selectionSize - indexOfProbability);
         }
         return probabilities;
     }
 
-    private int combinations(int generalValue, int currentValue) {
-        int combinations = 0;
-        if (currentValue <= generalValue) {
-            combinations
-                    = generalValue == 0 && currentValue == 0 ? 1
-                    : currentValue == 0 ? 1
-                    : generalValue == currentValue ? 1
-                    : factorialByFunctionOfStirling(generalValue)
-                    / (factorialByFunctionOfStirling(currentValue)
-                    * factorialByFunctionOfStirling(generalValue - currentValue));
-        }
-        return combinations;
-    }
+    private static class СombinatorialAnalysis {
 
-    private int factorialByFunctionOfStirling(int value) {
-        return (int) Math.round(Math.sqrt(2 * Math.PI * value) * Math.pow(value / Math.E, value));
+        private static int combinations(int generalValue, int currentValue) {
+            return placements(generalValue, currentValue) / factorial(generalValue);
+        }
+
+        private static int placements(int generalValue, int currentValue) {
+            return factorial(currentValue) / factorial(currentValue - generalValue);
+
+        }
+
+        private static int factorial(int value) {
+            return (value > 0) ? value * factorial(value - 1) : 1;
+        }
     }
 }
+
