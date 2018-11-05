@@ -50,6 +50,13 @@ public class DistributorWindowController {
 
     @FXML
     private void clickOnMenuItemAbout() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Distributor-WKN");
+        alert.setHeaderText("Информация о программе и авторе");
+        alert.setContentText("Задача: Сгенерировать биномиальное распределение\n"
+                .concat("Автор: Пикалов Артем\n")
+                .concat("Группа: 6302-090301D"));
+        alert.show();
     }
 
     @FXML
