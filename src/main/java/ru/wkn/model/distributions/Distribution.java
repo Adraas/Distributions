@@ -1,5 +1,6 @@
 package ru.wkn.model.distributions;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -79,6 +80,7 @@ public class Distribution {
 
         for (int indexOfProbability = 0; indexOfProbability < selectionSize; indexOfProbability++) {
             probabilities[indexOfProbability] = СombinatorialAnalysis.combinations(selectionSize, indexOfProbability)
+                    .longValue()
                     * Math.pow(probability, indexOfProbability)
                     * Math.pow(probabilityOfFailure, selectionSize - indexOfProbability);
         }
@@ -87,18 +89,17 @@ public class Distribution {
 
     private static class СombinatorialAnalysis {
 
-        private static int combinations(int generalValue, int currentValue) {
-            return placements(generalValue, currentValue) / factorial(generalValue);
+        private static BigInteger combinations(int generalValue, int currentValue) {
+            return placements(generalValue, currentValue).divide(factorial(BigInteger.valueOf(currentValue)));
         }
 
-        private static int placements(int generalValue, int currentValue) {
-            return factorial(currentValue) / factorial(currentValue - generalValue);
-
+        private static BigInteger placements(int generalValue, int currentValue) {
+            return factorial(BigInteger.valueOf(generalValue)).divide(factorial(BigInteger.valueOf(generalValue - currentValue)));
         }
 
-        private static int factorial(int value) {
-            return (value > 0) ? value * factorial(value - 1) : 1;
+        private static BigInteger factorial(BigInteger value) {
+            return (value.longValue() > 0) ? factorial(value.subtract(BigInteger.valueOf(1)))
+                    .multiply(value) : BigInteger.valueOf(1);
         }
     }
 }
-
