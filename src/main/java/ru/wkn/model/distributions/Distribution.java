@@ -43,18 +43,18 @@ public class Distribution {
         int distributionPartSize = distribution.getRandomSample().length;
 
         for (int indexOfInterval = 0; indexOfInterval < quantityOfIntervals; indexOfInterval++) {
-            List<Double> currentPartOfRandomVariableAsList = new ArrayList<>();
+            List<Double> currentPartOfRandomSampleAsList = new ArrayList<>();
 
             while (indexOfCurrentPartOfRandomSample < distributionPartSize
                     && randomSample[indexOfCurrentPartOfRandomSample]
                     - (minValueOfRandomSample - 1) < increment * (indexOfInterval + 1)) {
-                currentPartOfRandomVariableAsList
+                currentPartOfRandomSampleAsList
                         .add(randomSample[indexOfCurrentPartOfRandomSample]);
                 indexOfCurrentPartOfRandomSample++;
             }
 
             double[] currentPartOfRandomSample
-                    = convertListDoubleToArray(currentPartOfRandomVariableAsList);
+                    = convertListDoubleToArray(currentPartOfRandomSampleAsList);
 
             Distribution currentPartOfDistribution
                     = new Distribution(currentPartOfRandomSample, distribution.getProbability());
