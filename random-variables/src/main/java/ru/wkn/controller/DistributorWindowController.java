@@ -67,7 +67,7 @@ public class DistributorWindowController {
             double probability = sliderProbability.getValue();
 
             distributorFacade = new DistributorFacade();
-            distributorFacade.getDistributor("binomial-distributor");
+            distributorFacade.setDistributor("binomial-distributor");
             distributorFacade.getBinomialDistribution(selectionSize, valueRange, probability);
             distributorFacade.getIntervals(quantityOfIntervals);
 
