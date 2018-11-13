@@ -99,10 +99,9 @@ public class DistributorWindowController {
         XYChart.Series<String, Integer> dataOfSeries = new XYChart.Series<>();
         dataOfSeries.setName("Случайные величины");
 
-        for (int indexOfRandomVariable = 0; indexOfRandomVariable < distributorFacade.getIntervals(0)
-                .length; indexOfRandomVariable++) {
-            dataOfSeries.getData().add(new XYChart.Data<>(String
-                    .valueOf(indexOfRandomVariable),
+        for (int indexOfRandomVariable = 0; indexOfRandomVariable < distributorFacade.getIntervals(0).length; indexOfRandomVariable++) {
+            dataOfSeries.getData().add(new XYChart.Data<>(
+                    String.valueOf(indexOfRandomVariable),
                     distributorFacade.getIntervals(0)[indexOfRandomVariable].countOfIntervalValues()));
         }
         barChartDistributions.getData().add(dataOfSeries);
