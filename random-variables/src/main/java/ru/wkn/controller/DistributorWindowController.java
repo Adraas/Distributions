@@ -97,7 +97,7 @@ public class DistributorWindowController {
 
     private void drawOnBarChart() {
         XYChart.Series<String, Integer> dataOfSeries = new XYChart.Series<>();
-        dataOfSeries.setName("Случайные величины");
+        dataOfSeries.setName("Частоты попадания в интервалы");
 
         for (int indexOfRandomVariable = 0; indexOfRandomVariable < distributorFacade.getIntervals(0).length; indexOfRandomVariable++) {
             dataOfSeries.getData().add(new XYChart.Data<>(
