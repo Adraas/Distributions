@@ -7,8 +7,9 @@
     <groupId>ru.wkn</groupId>
     <artifactId>distributions</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
     <name>Distributions</name>
-    <packaging>jar</packaging>
 
     <developers>
         <developer>
@@ -26,6 +27,21 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>information-streams</id>
+            <modules>
+                <module>information-streams</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>random-variables</id>
+            <modules>
+                <module>random-variables</module>
+            </modules>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
@@ -37,11 +53,6 @@
                     <target>${jdk.version}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
             </plugin>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>

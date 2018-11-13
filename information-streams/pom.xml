@@ -12,6 +12,8 @@
 
     <artifactId>information-streams</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
     <name>Information streams</name>
 
 </project>
