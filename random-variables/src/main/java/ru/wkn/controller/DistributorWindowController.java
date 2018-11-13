@@ -12,10 +12,6 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import ru.wkn.model.DistributorFacade;
-import ru.wkn.distributions.Distribution;
-import ru.wkn.distributions.Interval;
-import ru.wkn.distributors.Distributor;
-import ru.wkn.distributors.discrete.BinomialDistributor;
 import ru.wkn.utils.QualityControl;
 
 public class DistributorWindowController {
@@ -40,8 +36,7 @@ public class DistributorWindowController {
     private TextField textFieldQuantityOfIntervals;
     @FXML
     private TextField textFieldThresholdValue;
-    private Distribution distribution;
-    private Interval[] intervals;
+    private DistributorFacade distributorFacade;
 
     @FXML
     private void clickOnMenuItemClose() {
@@ -71,12 +66,10 @@ public class DistributorWindowController {
             int quantityOfIntervals = Integer.valueOf(textFieldQuantityOfIntervals.getText());
             double probability = sliderProbability.getValue();
 
-            DistributorFacade distributorFacade = new DistributorFacade();
-            Distributor distributor = distributorFacade
-                    .getDistributor("binomial-distributor");
-            distribution = ((BinomialDistributor) distributor)
-                    .getDistribution(selectionSize, valueRange, probability);
-            intervals = distribution.intervals(quantityOfIntervals);
+            distributorFacade = new DistributorFacade();
+            distributorFacade.getDistributor("binomial-distributor");
+            distributorFacade.getBinomialDistribution(selectionSize, valueRange, probability);
+            distributorFacade.getIntervals(quantityOfIntervals);
 
             drawOnBarChart();
             fillTheListView();
@@ -89,7 +82,10 @@ public class DistributorWindowController {
         if (!textFieldThresholdValue.getText().equals("")) {
             double thresholdValue = Double.valueOf(textFieldThresholdValue.getText());
             boolean result = QualityControl
-                    .isImplementationBelongsToCurrentDistribution(intervals, distribution.theoreticalProbabilities(), thresholdValue);
+                    .isImplementationBelongsToCurrentDistribution(
+                            distributorFacade.getIntervals(0),
+                            distributorFacade.getBinomialDistribution(0, 0, 0).theoreticalProbabilities(),
+                            thresholdValue);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Distributor-WKN");
@@ -103,24 +99,23 @@ public class DistributorWindowController {
         XYChart.Series<String, Integer> dataOfSeries = new XYChart.Series<>();
         dataOfSeries.setName("Случайные величины");
 
-        for (int indexOfRandomVariable = 0; indexOfRandomVariable < intervals.length; indexOfRandomVariable++) {
+        for (int indexOfRandomVariable = 0; indexOfRandomVariable < distributorFacade.getIntervals(0)
+                .length; indexOfRandomVariable++) {
             dataOfSeries.getData().add(new XYChart.Data<>(String
                     .valueOf(indexOfRandomVariable),
-                    intervals[indexOfRandomVariable].countOfIntervalValues()));
+                    distributorFacade.getIntervals(0)[indexOfRandomVariable].countOfIntervalValues()));
         }
         barChartDistributions.getData().add(dataOfSeries);
     }
 
     private void fillTheListView() {
-        if (distribution != null) {
-            double[] distributionOfRandomVariables = distribution.getRandomSample();
-            ObservableList<Double> observableList = FXCollections.observableArrayList();
+        double[] distributionOfRandomVariables = distributorFacade.getBinomialDistribution(0, 0, 0).getRandomSample();
+        ObservableList<Double> observableList = FXCollections.observableArrayList();
 
-            for (double distributionOfRandomVariable : distributionOfRandomVariables) {
-                observableList.add(distributionOfRandomVariable);
-            }
-            listViewRandomVariable.setItems(observableList);
+        for (double distributionOfRandomVariable : distributionOfRandomVariables) {
+            observableList.add(distributionOfRandomVariable);
         }
+        listViewRandomVariable.setItems(observableList);
     }
 
     private void updateElementsContent() {
