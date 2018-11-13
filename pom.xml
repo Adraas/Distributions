@@ -31,12 +31,14 @@
         <profile>
             <id>information-streams</id>
             <modules>
+                <module>distribution-entities</module>
                 <module>information-streams</module>
             </modules>
         </profile>
         <profile>
             <id>random-variables</id>
             <modules>
+                <module>distribution-entities</module>
                 <module>random-variables</module>
             </modules>
         </profile>

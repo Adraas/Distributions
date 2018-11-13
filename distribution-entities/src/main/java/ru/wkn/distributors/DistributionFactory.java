@@ -1,8 +1,8 @@
-package ru.wkn.model.distributors;
+package ru.wkn.distributors;
 
-import ru.wkn.model.distributors.continuous.UniformDistributor;
-import ru.wkn.model.distributors.discrete.BinomialDistributor;
-import ru.wkn.model.distributors.discrete.PoissonDistributor;
+import ru.wkn.distributors.continuous.UniformDistributor;
+import ru.wkn.distributors.discrete.BinomialDistributor;
+import ru.wkn.distributors.discrete.PoissonDistributor;
 
 public class DistributionFactory implements DistributionFactoryIF<Distributor> {
 

@@ -1,7 +1,7 @@
-package ru.wkn.model.distributors.continuous;
+package ru.wkn.distributors.continuous;
 
-import ru.wkn.model.distributions.Distribution;
-import ru.wkn.model.distributors.Distributor;
+import ru.wkn.distributions.Distribution;
+import ru.wkn.distributors.Distributor;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

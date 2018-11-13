@@ -1,7 +1,7 @@
-package ru.wkn.model.distributors.discrete;
+package ru.wkn.distributors.discrete;
 
-import ru.wkn.model.distributions.Distribution;
-import ru.wkn.model.distributors.Distributor;
+import ru.wkn.distributions.Distribution;
+import ru.wkn.distributors.Distributor;
 
 public class PoissonDistributor extends Distributor {
 

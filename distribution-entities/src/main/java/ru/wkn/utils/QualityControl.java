@@ -1,6 +1,6 @@
-package ru.wkn.model.utils;
+package ru.wkn.utils;
 
-import ru.wkn.model.distributions.Interval;
+import ru.wkn.distributions.Interval;
 
 public class QualityControl {
 

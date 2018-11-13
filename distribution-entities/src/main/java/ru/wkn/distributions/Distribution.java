@@ -1,4 +1,4 @@
-package ru.wkn.model.distributions;
+package ru.wkn.distributions;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

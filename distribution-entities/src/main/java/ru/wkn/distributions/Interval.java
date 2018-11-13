@@ -1,4 +1,4 @@
-package ru.wkn.model.distributions;
+package ru.wkn.distributions;
 
 public class Interval {
 

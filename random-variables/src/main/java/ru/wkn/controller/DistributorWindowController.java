@@ -12,11 +12,11 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import ru.wkn.model.DistributorFacade;
-import ru.wkn.model.distributions.Distribution;
-import ru.wkn.model.distributions.Interval;
-import ru.wkn.model.distributors.Distributor;
-import ru.wkn.model.distributors.discrete.BinomialDistributor;
-import ru.wkn.model.utils.QualityControl;
+import ru.wkn.distributions.Distribution;
+import ru.wkn.distributions.Interval;
+import ru.wkn.distributors.Distributor;
+import ru.wkn.distributors.discrete.BinomialDistributor;
+import ru.wkn.utils.QualityControl;
 
 public class DistributorWindowController {
 
