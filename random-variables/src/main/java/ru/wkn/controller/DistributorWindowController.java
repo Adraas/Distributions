@@ -67,7 +67,7 @@ public class DistributorWindowController {
             double probability = sliderProbability.getValue();
 
             distributorFacade = new DistributorFacade();
-            distributorFacade.setDistributor("binomial-distributor");
+            distributorFacade.getDistributor("binomial-distributor");
             distributorFacade.getBinomialDistribution(selectionSize, valueRange, probability);
             distributorFacade.getIntervals(quantityOfIntervals);
 
@@ -84,7 +84,7 @@ public class DistributorWindowController {
             boolean result = QualityControl
                     .isImplementationBelongsToCurrentDistribution(
                             distributorFacade.getIntervals(0),
-                            distributorFacade.getBinomialDistribution(0, 0, 0).theoreticalProbabilities(),
+                            distributorFacade.getDistributor(null).theoreticalProbabilities(),
                             thresholdValue);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

@@ -22,4 +22,9 @@ public class PoissonDistributor extends Distributor {
         }
         return new Distribution(distribution, probability);
     }
+
+    @Override
+    public double[] theoreticalProbabilities() {
+        return null;
+    }
 }

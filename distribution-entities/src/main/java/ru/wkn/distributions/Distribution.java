@@ -1,6 +1,5 @@
 package ru.wkn.distributions;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -70,35 +69,5 @@ public class Distribution {
             doubles[index] = list.get(index);
         }
         return doubles;
-    }
-
-    public double[] theoreticalProbabilities() {
-        int selectionSize = randomSample.length;
-        double[] probabilities = new double[selectionSize];
-        double probabilityOfFailure = 1 - probability;
-
-        for (int indexOfProbability = 0; indexOfProbability < selectionSize; indexOfProbability++) {
-            probabilities[indexOfProbability] = СombinatorialAnalysis.combinations(selectionSize, indexOfProbability)
-                    .longValue()
-                    * Math.pow(probability, randomSample[indexOfProbability])
-                    * Math.pow(probabilityOfFailure, selectionSize - randomSample[indexOfProbability]);
-        }
-        return probabilities;
-    }
-
-    private static class СombinatorialAnalysis {
-
-        private static BigInteger combinations(int generalValue, int currentValue) {
-            return placements(generalValue, currentValue).divide(factorial(BigInteger.valueOf(currentValue)));
-        }
-
-        private static BigInteger placements(int generalValue, int currentValue) {
-            return factorial(BigInteger.valueOf(generalValue)).divide(factorial(BigInteger.valueOf(generalValue - currentValue)));
-        }
-
-        private static BigInteger factorial(BigInteger value) {
-            return (value.longValue() > 0) ? factorial(value.subtract(BigInteger.valueOf(1)))
-                    .multiply(value) : BigInteger.valueOf(1);
-        }
     }
 }

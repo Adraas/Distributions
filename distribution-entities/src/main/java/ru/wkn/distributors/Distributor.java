@@ -8,4 +8,6 @@ public abstract class Distributor {
         Random random = new Random();
         return random.nextDouble();
     }
+
+    public abstract double[] theoreticalProbabilities();
 }

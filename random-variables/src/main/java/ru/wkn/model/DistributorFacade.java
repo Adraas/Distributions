@@ -12,12 +12,13 @@ public class DistributorFacade {
     private Distribution distribution;
     private Interval[] intervals;
 
-    public void setDistributor(String typeOfDistributor) {
+    public Distributor getDistributor(String typeOfDistributor) {
         if (distributor == null) {
             DistributionFactory distributionFactoryIF;
             distributionFactoryIF = new DistributionFactory();
             distributor = distributionFactoryIF.createDistributorByType(typeOfDistributor);
         }
+        return distributor;
     }
 
     public Distribution getBinomialDistribution(int selectionSize, int valueRange, double probability) {
