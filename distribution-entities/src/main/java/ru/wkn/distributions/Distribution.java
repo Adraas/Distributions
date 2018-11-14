@@ -13,6 +13,8 @@ public class Distribution {
     public Distribution(double[] randomSample, double probability) {
         this.randomSample = randomSample;
         this.probability = probability;
+
+        Arrays.sort(randomSample);
     }
 
     public double[] getRandomSample() {
@@ -24,11 +26,8 @@ public class Distribution {
     }
 
     public Interval[] intervals(int quantityOfIntervals) {
-        Distribution distribution = this;
         Interval[] intervals = new Interval[quantityOfIntervals];
-        Arrays.sort(distribution.getRandomSample());
 
-        double[] randomSample = distribution.getRandomSample();
         double maxValueOfRandomSample
                 = randomSample[randomSample.length - 1];
         double minValueOfRandomSample = randomSample[0];
@@ -40,7 +39,7 @@ public class Distribution {
         }
 
         int indexOfCurrentPartOfRandomSample = 0;
-        int distributionPartSize = distribution.getRandomSample().length;
+        int distributionPartSize = randomSample.length;
 
         for (int indexOfInterval = 0; indexOfInterval < quantityOfIntervals; indexOfInterval++) {
             List<Double> currentPartOfRandomSampleAsList = new ArrayList<>();
@@ -57,7 +56,7 @@ public class Distribution {
                     = convertListDoubleToArray(currentPartOfRandomSampleAsList);
 
             Distribution currentPartOfDistribution
-                    = new Distribution(currentPartOfRandomSample, distribution.getProbability());
+                    = new Distribution(currentPartOfRandomSample, probability);
             intervals[indexOfInterval]
                     = new Interval(currentPartOfDistribution);
         }
@@ -81,8 +80,8 @@ public class Distribution {
         for (int indexOfProbability = 0; indexOfProbability < selectionSize; indexOfProbability++) {
             probabilities[indexOfProbability] = СombinatorialAnalysis.combinations(selectionSize, indexOfProbability)
                     .longValue()
-                    * Math.pow(probability, indexOfProbability)
-                    * Math.pow(probabilityOfFailure, selectionSize - indexOfProbability);
+                    * Math.pow(probability, randomSample[indexOfProbability])
+                    * Math.pow(probabilityOfFailure, selectionSize - randomSample[indexOfProbability]);
         }
         return probabilities;
     }
