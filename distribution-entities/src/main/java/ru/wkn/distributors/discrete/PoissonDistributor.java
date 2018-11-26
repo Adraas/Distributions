@@ -25,6 +25,6 @@ public class PoissonDistributor extends Distributor {
 
     @Override
     public double[] theoreticalProbabilities() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 }

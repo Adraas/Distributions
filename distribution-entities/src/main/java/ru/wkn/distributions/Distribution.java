@@ -9,11 +9,16 @@ public class Distribution {
     private double[] randomSample;
     private double probability;
 
+    public Distribution(double[] randomSample) {
+        this.randomSample = randomSample;
+        Arrays.sort(randomSample);
+    }
+
     public Distribution(double[] randomSample, double probability) {
         this.randomSample = randomSample;
         this.probability = probability;
 
-        Arrays.sort(randomSample);
+        Arrays.sort(this.randomSample);
     }
 
     public double[] getRandomSample() {
