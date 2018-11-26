@@ -3,7 +3,7 @@ package ru.wkn.distributors;
 import ru.wkn.distributors.discrete.BinomialDistributor;
 import ru.wkn.distributors.discrete.PoissonDistributor;
 
-public class DistributionFactory implements DistributionFactoryIF<Distributor> {
+public class DistributorFactory implements DistributorFactoryIF<Distributor> {
 
     @Override
     public Distributor createDistributorByType(String typeOfDistributor) {
