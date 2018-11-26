@@ -4,12 +4,17 @@ import ru.wkn.distributions.Distribution;
 import ru.wkn.distributors.Distributor;
 
 import java.math.BigInteger;
+import java.util.Properties;
 
 public class BinomialDistributor extends Distributor {
 
     private Distribution distribution;
 
-    public Distribution getDistribution(int selectionSize, int valueRange, double probability) {
+    public Distribution getDistribution(Properties properties) {
+        int selectionSize = Integer.parseInt(properties.getProperty("selectionSize"));
+        double probability = Double.parseDouble(properties.getProperty("probability"));
+        int valueRange = Integer.parseInt(properties.getProperty("valueRange"));
+
         double[] implementationsOfRandomVariables = new double[selectionSize];
         int currentImplementationOfRandomVariable;
 

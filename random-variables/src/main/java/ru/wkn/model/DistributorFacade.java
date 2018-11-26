@@ -6,6 +6,10 @@ import ru.wkn.distributors.DistributionFactory;
 import ru.wkn.distributors.Distributor;
 import ru.wkn.distributors.discrete.BinomialDistributor;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 public class DistributorFacade {
 
     private Distributor distributor;
@@ -23,7 +27,20 @@ public class DistributorFacade {
 
     public Distribution getBinomialDistribution(int selectionSize, int valueRange, double probability) {
         if (distribution == null) {
-            distribution = ((BinomialDistributor) distributor).getDistribution(selectionSize, valueRange, probability);
+            try {
+                InputStream inputStream = DistributorFacade.class
+                        .getResourceAsStream("/distribution-parameters/binomial.properties");
+                Properties properties = new Properties();
+
+                properties.load(inputStream);
+                properties.setProperty("selectionSize", String.valueOf(selectionSize));
+                properties.setProperty("valueRange", String.valueOf(valueRange));
+                properties.setProperty("probability", String.valueOf(probability));
+
+                distribution = ((BinomialDistributor) distributor).getDistribution(properties);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return distribution;
     }
