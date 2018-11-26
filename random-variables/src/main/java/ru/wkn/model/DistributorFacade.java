@@ -5,8 +5,6 @@ import ru.wkn.distributions.Interval;
 import ru.wkn.distributors.DistributionFactory;
 import ru.wkn.distributors.Distributor;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 public class DistributorFacade {
@@ -24,28 +22,19 @@ public class DistributorFacade {
         return distributor;
     }
 
-    public Distribution getBinomialDistribution(int selectionSize, int valueRange, double probability) {
-        if (distribution == null) {
-            try {
-                InputStream inputStream = DistributorFacade.class
-                        .getResourceAsStream("/distribution-parameters/binomial.properties");
-                Properties properties = new Properties();
+    public void initDistribution(Properties properties) {
+        distribution = distributor.getDistribution(properties);
+    }
 
-                properties.load(inputStream);
-                properties.setProperty("selectionSize", String.valueOf(selectionSize));
-                properties.setProperty("valueRange", String.valueOf(valueRange));
-                properties.setProperty("probability", String.valueOf(probability));
-
-                distribution = distributor.getDistribution(properties);
-                properties.clear();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    public Distribution getDistribution() {
         return distribution;
     }
 
-    public Interval[] getIntervals(int quantityOfIntervals) {
-        return intervals != null ? intervals : (intervals = distribution.intervals(quantityOfIntervals));
+    public void initIntervals(int quantityOfIntervals) {
+        intervals = distribution.intervals(quantityOfIntervals);
+    }
+
+    public Interval[] getIntervals() {
+        return intervals;
     }
 }

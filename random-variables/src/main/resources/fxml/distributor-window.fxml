@@ -22,13 +22,13 @@
             <menus>
                 <Menu mnemonicParsing="false" text="Файл">
                     <items>
-                        <MenuItem fx:id="menuItemClose" mnemonicParsing="false" onAction="#clickOnMenuItemClose"
+                        <MenuItem mnemonicParsing="false" onAction="#clickOnMenuItemClose"
                                   text="Выход"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Помощь">
                     <items>
-                        <MenuItem fx:id="menuItemAbout" mnemonicParsing="false" onAction="#clickOnMenuItemAbout"
+                        <MenuItem mnemonicParsing="false" onAction="#clickOnMenuItemAbout"
                                   text="О программе"/>
                     </items>
                 </Menu>

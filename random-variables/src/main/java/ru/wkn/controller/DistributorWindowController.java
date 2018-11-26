@@ -7,12 +7,15 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import ru.wkn.model.DistributorFacade;
 import ru.wkn.utils.QualityControl;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 public class DistributorWindowController {
 
@@ -20,10 +23,6 @@ public class DistributorWindowController {
     private BarChart barChartDistributions;
     @FXML
     private ListView listViewRandomVariable;
-    @FXML
-    private MenuItem menuItemClose;
-    @FXML
-    private MenuItem menuItemAbout;
     @FXML
     private GridPane gridPaneQualityControl;
     @FXML
@@ -68,8 +67,8 @@ public class DistributorWindowController {
 
             distributorFacade = new DistributorFacade();
             distributorFacade.getDistributor("binomial-distributor");
-            distributorFacade.getBinomialDistribution(selectionSize, valueRange, probability);
-            distributorFacade.getIntervals(quantityOfIntervals);
+            distributorFacade.initDistribution(getBinomialProperties(selectionSize, valueRange, probability));
+            distributorFacade.initIntervals(quantityOfIntervals);
 
             drawOnBarChart();
             fillTheListView();
@@ -83,7 +82,7 @@ public class DistributorWindowController {
             double thresholdValue = Double.valueOf(textFieldThresholdValue.getText());
             boolean result = QualityControl
                     .isImplementationBelongsToCurrentDistribution(
-                            distributorFacade.getIntervals(0),
+                            distributorFacade.getIntervals(),
                             distributorFacade.getDistributor(null).theoreticalProbabilities(),
                             thresholdValue);
 
@@ -95,20 +94,37 @@ public class DistributorWindowController {
         }
     }
 
+    private Properties getBinomialProperties(int selectionSize, int valueRange, double probability) {
+        InputStream inputStream = DistributorWindowController.class
+                .getResourceAsStream("/distribution-parameters/binomial.properties");
+        Properties properties = new Properties();
+
+        try {
+            properties.load(inputStream);
+
+            properties.setProperty("selectionSize", String.valueOf(selectionSize));
+            properties.setProperty("valueRange", String.valueOf(valueRange));
+            properties.setProperty("probability", String.valueOf(probability));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return properties;
+    }
+
     private void drawOnBarChart() {
         XYChart.Series<String, Integer> dataOfSeries = new XYChart.Series<>();
         dataOfSeries.setName("Частоты попадания в интервалы");
 
-        for (int indexOfRandomVariable = 0; indexOfRandomVariable < distributorFacade.getIntervals(0).length; indexOfRandomVariable++) {
+        for (int indexOfRandomVariable = 0; indexOfRandomVariable < distributorFacade.getIntervals().length; indexOfRandomVariable++) {
             dataOfSeries.getData().add(new XYChart.Data<>(
                     String.valueOf(indexOfRandomVariable),
-                    distributorFacade.getIntervals(0)[indexOfRandomVariable].countOfIntervalValues()));
+                    distributorFacade.getIntervals()[indexOfRandomVariable].countOfIntervalValues()));
         }
         barChartDistributions.getData().add(dataOfSeries);
     }
 
     private void fillTheListView() {
-        double[] distributionOfRandomVariables = distributorFacade.getBinomialDistribution(0, 0, 0).getRandomSample();
+        double[] distributionOfRandomVariables = distributorFacade.getDistribution().getRandomSample();
         ObservableList<Double> observableList = FXCollections.observableArrayList();
 
         for (double distributionOfRandomVariable : distributionOfRandomVariables) {
