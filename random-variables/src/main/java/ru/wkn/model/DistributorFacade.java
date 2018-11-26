@@ -2,8 +2,8 @@ package ru.wkn.model;
 
 import ru.wkn.distributions.Distribution;
 import ru.wkn.distributions.Interval;
-import ru.wkn.distributors.DistributionFactory;
 import ru.wkn.distributors.Distributor;
+import ru.wkn.distributors.DistributorFactoryIF;
 
 import java.util.Properties;
 
@@ -14,8 +14,8 @@ public class DistributorFacade {
     private Interval[] intervals;
 
     public void initDistributor(String typeOfDistributor) {
-        DistributionFactory distributionFactoryIF = new DistributionFactory();
-        distributor = distributionFactoryIF.createDistributorByType(typeOfDistributor);
+        DistributorFactoryIF<Distributor> distributorFactoryIF = DistributorFactoryIF.getDistributorFactoryByDefault();
+        distributor = distributorFactoryIF.createDistributorByType(typeOfDistributor);
     }
 
     public Distributor getDistributor() {
