@@ -4,7 +4,6 @@ import ru.wkn.distributions.Distribution;
 import ru.wkn.distributions.Interval;
 import ru.wkn.distributors.DistributionFactory;
 import ru.wkn.distributors.Distributor;
-import ru.wkn.distributors.discrete.BinomialDistributor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,7 +36,8 @@ public class DistributorFacade {
                 properties.setProperty("valueRange", String.valueOf(valueRange));
                 properties.setProperty("probability", String.valueOf(probability));
 
-                distribution = ((BinomialDistributor) distributor).getDistribution(properties);
+                distribution = distributor.getDistribution(properties);
+                properties.clear();
             } catch (IOException e) {
                 e.printStackTrace();
             }
