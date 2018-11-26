@@ -2,7 +2,7 @@ package ru.wkn.streams;
 
 import ru.wkn.distributions.Distribution;
 
-public class PalmStream implements Stream {
+public class PalmStream extends Stream {
 
     @Override
     public double[] initTimeIntervals(Distribution distribution, int timeCoefficient) {

@@ -2,7 +2,7 @@ package ru.wkn.streams;
 
 import ru.wkn.distributions.Distribution;
 
-public interface Stream {
+public abstract class Stream {
 
-    double[] initTimeIntervals(Distribution distribution, int timeCoefficient);
+    public abstract double[] initTimeIntervals(Distribution distribution, int timeCoefficient);
 }
