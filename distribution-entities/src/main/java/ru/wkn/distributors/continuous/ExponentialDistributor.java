@@ -7,6 +7,7 @@ import java.util.Properties;
 
 public class ExponentialDistributor extends Distributor {
 
+    @Override
     public Distribution getDistribution(Properties properties) {
         int selectionSize = Integer.parseInt(properties.getProperty("selectionSize"));
         double lambda = Double.parseDouble(properties.getProperty("lambda"));

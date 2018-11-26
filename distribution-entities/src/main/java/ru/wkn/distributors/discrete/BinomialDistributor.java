@@ -10,6 +10,7 @@ public class BinomialDistributor extends Distributor {
 
     private Distribution distribution;
 
+    @Override
     public Distribution getDistribution(Properties properties) {
         int selectionSize = Integer.parseInt(properties.getProperty("selectionSize"));
         double probability = Double.parseDouble(properties.getProperty("probability"));
