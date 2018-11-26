@@ -13,12 +13,12 @@ public class DistributorFacade {
     private Distribution distribution;
     private Interval[] intervals;
 
-    public Distributor getDistributor(String typeOfDistributor) {
-        if (distributor == null) {
-            DistributionFactory distributionFactoryIF;
-            distributionFactoryIF = new DistributionFactory();
-            distributor = distributionFactoryIF.createDistributorByType(typeOfDistributor);
-        }
+    public void initDistributor(String typeOfDistributor) {
+        DistributionFactory distributionFactoryIF = new DistributionFactory();
+        distributor = distributionFactoryIF.createDistributorByType(typeOfDistributor);
+    }
+
+    public Distributor getDistributor() {
         return distributor;
     }
 
