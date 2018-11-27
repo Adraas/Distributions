@@ -6,10 +6,10 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import ru.wkn.model.DistributorFacade;
 import ru.wkn.utils.QualityControl;
 
@@ -24,8 +24,6 @@ public class DistributorWindowController {
     @FXML
     private ListView listViewRandomVariable;
     @FXML
-    private GridPane gridPaneQualityControl;
-    @FXML
     private Slider sliderProbability;
     @FXML
     private TextField textFieldSelectionSize;
@@ -35,6 +33,8 @@ public class DistributorWindowController {
     private TextField textFieldQuantityOfIntervals;
     @FXML
     private TextField textFieldThresholdValue;
+    @FXML
+    private Button buttonQualityControl;
     private DistributorFacade distributorFacade;
 
     @FXML
@@ -72,7 +72,8 @@ public class DistributorWindowController {
 
             drawOnBarChart();
             fillTheListView();
-            gridPaneQualityControl.setDisable(false);
+            textFieldThresholdValue.setDisable(false);
+            buttonQualityControl.setDisable(false);
         }
     }
 
