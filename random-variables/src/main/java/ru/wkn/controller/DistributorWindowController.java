@@ -60,20 +60,22 @@ public class DistributorWindowController {
                 && !textFieldQuantityOfIntervals.getText().equals("")) {
             updateElementsContent();
 
-            int selectionSize = Integer.valueOf(textFieldSelectionSize.getText());
-            int valueRange = Integer.valueOf(textFieldValueRange.getText());
-            int quantityOfIntervals = Integer.valueOf(textFieldQuantityOfIntervals.getText());
+            int selectionSize = Integer.parseInt(textFieldSelectionSize.getText());
+            int valueRange = Integer.parseInt(textFieldValueRange.getText());
+            int quantityOfIntervals = Integer.parseInt(textFieldQuantityOfIntervals.getText());
             double probability = sliderProbability.getValue();
+            Properties properties = getBinomialProperties(selectionSize, valueRange, probability);
 
             distributorFacade = new DistributorFacade();
             distributorFacade.initDistributor("binomial-distributor");
-            distributorFacade.initDistribution(getBinomialProperties(selectionSize, valueRange, probability));
+            distributorFacade.initDistribution(properties);
             distributorFacade.initIntervals(quantityOfIntervals);
 
             drawOnBarChart();
             fillTheListView();
             textFieldThresholdValue.setDisable(false);
             buttonQualityControl.setDisable(false);
+            properties.clear();
         }
     }
 
@@ -115,20 +117,21 @@ public class DistributorWindowController {
     private void drawOnBarChart() {
         XYChart.Series<String, Integer> dataOfSeries = new XYChart.Series<>();
         dataOfSeries.setName("Частоты попадания в интервалы");
+        int size = distributorFacade.getIntervals().length;
 
-        for (int indexOfRandomVariable = 0; indexOfRandomVariable < distributorFacade.getIntervals().length; indexOfRandomVariable++) {
+        for (int i = 0; i < size; i++) {
             dataOfSeries.getData().add(new XYChart.Data<>(
-                    String.valueOf(indexOfRandomVariable),
-                    distributorFacade.getIntervals()[indexOfRandomVariable].countOfIntervalValues()));
+                    String.valueOf(i),
+                    distributorFacade.getIntervals()[i].countOfIntervalValues()));
         }
         barChartDistributions.getData().add(dataOfSeries);
     }
 
     private void fillTheListView() {
-        double[] distributionOfRandomVariables = distributorFacade.getDistribution().getRandomSample();
+        double[] randomSample = distributorFacade.getDistribution().getRandomSample();
         ObservableList<Double> observableList = FXCollections.observableArrayList();
 
-        for (double distributionOfRandomVariable : distributionOfRandomVariables) {
+        for (double distributionOfRandomVariable : randomSample) {
             observableList.add(distributionOfRandomVariable);
         }
         listViewRandomVariable.setItems(observableList);

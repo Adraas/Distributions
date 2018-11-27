@@ -15,7 +15,7 @@ public class ExponentialDistributor extends Distributor {
         double[] randomSample = new double[selectionSize];
 
         for (int i = 0; i < selectionSize; i++) {
-            randomSample[i] = - Math.log(getRandomValue()) / lambda;
+            randomSample[i] = - Math.log(getRandomProbability()) / lambda;
         }
         return new Distribution(randomSample);
     }

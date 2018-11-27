@@ -7,7 +7,7 @@ import java.util.Random;
 
 public abstract class Distributor {
 
-    protected double getRandomValue() {
+    protected double getRandomProbability() {
         Random random = new Random();
         return random.nextDouble();
     }

@@ -23,7 +23,7 @@ public class BinomialDistributor extends Distributor {
             currentImplementationOfRandomVariable = 0;
 
             for (int i = 0; i < valueRange; i++) {
-                if (getRandomValue() < probability) {
+                if (getRandomProbability() < probability) {
                     currentImplementationOfRandomVariable++;
                 }
             }
