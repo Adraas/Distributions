@@ -63,7 +63,7 @@
             </children>
         </GridPane>
         <Button layoutX="467.0" layoutY="362.0" mnemonicParsing="false" onAction="#clickOnButtonGenerate"
-                prefHeight="25.0" prefWidth="246.0" text="Сгенерировать СВ"/>
-        <Label layoutX="467.0" layoutY="39.0" text="Моменты времени наступления событий:"/>
+                prefHeight="25.0" prefWidth="246.0" text="Сгенерировать поток"/>
+        <Label layoutX="467.0" layoutY="39.0" text="Интервалы времени между событиями:"/>
     </children>
 </AnchorPane>

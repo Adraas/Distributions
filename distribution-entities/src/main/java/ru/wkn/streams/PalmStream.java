@@ -5,7 +5,7 @@ import ru.wkn.distributions.Distribution;
 public class PalmStream extends Stream {
 
     @Override
-    public double[] initTimeIntervals(Distribution distribution, int timeCoefficient) {
+    public double[] initTimeIntervals(Distribution distribution, double timeCoefficient) {
         double[] randomSample = distribution.getRandomSample();
         int size = randomSample.length;
         double[] timeIntervals = new double[size];

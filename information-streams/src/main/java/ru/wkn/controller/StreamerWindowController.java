@@ -26,7 +26,6 @@ public class StreamerWindowController {
     private TextField textFieldLambdaValue;
     @FXML
     private TextField textFieldMinWaitingTime;
-    private InformationStreamsFacade informationStreamsFacade;
 
     @FXML
     private void clickOnMenuItemClose() {
@@ -53,20 +52,22 @@ public class StreamerWindowController {
             updateElementsContent();
 
             int selectionSize = Integer.parseInt(textFieldSelectionSize.getText());
-            double lambdaValue = Integer.parseInt(textFieldLambdaValue.getText());
-            double minWaitingTime = Integer.parseInt(textFieldMinWaitingTime.getText());
+            double lambdaValue = Double.parseDouble(textFieldLambdaValue.getText());
+            double minWaitingTime = Double.parseDouble(textFieldMinWaitingTime.getText());
+            InformationStreamsFacade informationStreamsFacade = new InformationStreamsFacade();
 
-            informationStreamsFacade = new InformationStreamsFacade();
             informationStreamsFacade.initDistributor("exponential-distributor");
-            informationStreamsFacade.initDistribution(getExponentialProperties(selectionSize, lambdaValue, minWaitingTime));
+            informationStreamsFacade.initDistribution(getExponentialProperties(selectionSize, lambdaValue));
             informationStreamsFacade.initStream("palm-stream");
 
-            drawOnBarChart();
-            fillTheListView();
+            double[] timeIntervals = informationStreamsFacade.getStream().initTimeIntervals(
+                    informationStreamsFacade.getDistribution(), minWaitingTime);
+            drawOnBarChart(timeIntervals);
+            fillTheListView(timeIntervals);
         }
     }
 
-    private Properties getExponentialProperties(int selectionSize, double lambdaValue, double minWaitingTime) {
+    private Properties getExponentialProperties(int selectionSize, double lambdaValue) {
         InputStream inputStream = StreamerWindowController.class
                 .getResourceAsStream("/stream-parameters/palm-stream.properties");
         Properties properties = new Properties();
@@ -76,30 +77,28 @@ public class StreamerWindowController {
 
             properties.setProperty("selectionSize", String.valueOf(selectionSize));
             properties.setProperty("lambdaValue", String.valueOf(lambdaValue));
-            properties.setProperty("minWaitingTime", String.valueOf(minWaitingTime));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return properties;
     }
 
-    private void drawOnBarChart() {
-        XYChart.Series<String, Integer> dataOfSeries = new XYChart.Series<>();
-        dataOfSeries.setName("Частоты попадания в интервалы");
-        int size = 0; // other value some waiting...
+    private void drawOnBarChart(double[] timeIntervals) {
+        XYChart.Series<String, Double> dataOfSeries = new XYChart.Series<>();
+        dataOfSeries.setName("Интервалы времени между событиями");
+        int size = timeIntervals.length;
 
         for (int i = 0; i < size; i++) {
-            // filling...
+            dataOfSeries.getData().add(new XYChart.Data<>(String.valueOf(i), timeIntervals[i]));
         }
         barChartProbabilities.getData().add(dataOfSeries);
     }
 
-    private void fillTheListView() {
-        double[] randomSample = null; // other value some waiting...
+    private void fillTheListView(double[] timeIntervals) {
         ObservableList<Double> observableList = FXCollections.observableArrayList();
 
-        for (double distributionOfRandomVariable : randomSample) {
-            observableList.add(distributionOfRandomVariable);
+        for (double timeInterval : timeIntervals) {
+            observableList.add(timeInterval);
         }
         listViewRandomVariable.setItems(observableList);
     }
