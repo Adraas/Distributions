@@ -1,12 +1,9 @@
 package ru.wkn.controller;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import ru.wkn.model.InformationStreamsFacade;
 
@@ -18,8 +15,6 @@ public class StreamerWindowController {
 
     @FXML
     private BarChart barChartProbabilities;
-    @FXML
-    private ListView listViewRandomVariable;
     @FXML
     private TextField textFieldSelectionSize;
     @FXML
@@ -49,7 +44,7 @@ public class StreamerWindowController {
         if (!textFieldSelectionSize.getText().equals("")
                 && !textFieldLambdaValue.getText().equals("")
                 && !textFieldMinWaitingTime.getText().equals("")) {
-            updateElementsContent();
+            barChartProbabilities.getData().clear();
 
             int selectionSize = Integer.parseInt(textFieldSelectionSize.getText());
             double lambdaValue = Double.parseDouble(textFieldLambdaValue.getText());
@@ -63,7 +58,6 @@ public class StreamerWindowController {
             double[] timeIntervals = informationStreamsFacade.getStream().initTimeIntervals(
                     informationStreamsFacade.getDistribution(), minWaitingTime);
             drawOnBarChart(timeIntervals);
-            fillTheListView(timeIntervals);
         }
     }
 
@@ -92,19 +86,5 @@ public class StreamerWindowController {
             dataOfSeries.getData().add(new XYChart.Data<>(String.valueOf(i), timeIntervals[i]));
         }
         barChartProbabilities.getData().add(dataOfSeries);
-    }
-
-    private void fillTheListView(double[] timeIntervals) {
-        ObservableList<Double> observableList = FXCollections.observableArrayList();
-
-        for (double timeInterval : timeIntervals) {
-            observableList.add(timeInterval);
-        }
-        listViewRandomVariable.setItems(observableList);
-    }
-
-    private void updateElementsContent() {
-        barChartProbabilities.getData().clear();
-        listViewRandomVariable.getItems().clear();
     }
 }

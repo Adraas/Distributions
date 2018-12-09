@@ -12,6 +12,6 @@ public class Launcher extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        new StreamerWindow().windowInitialization("Streamer-WKN", 745, 401);
+        new StreamerWindow().windowInitialization("Streamer-WKN", 705, 401);
     }
 }
